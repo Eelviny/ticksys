@@ -7,3 +7,16 @@ class Database():
 	def __init__(self, dbname):
 		self.conn = sqlite.connect(dbname)
 		self.c = self.conn.cursor()
+		
+	def execute(statement):
+		self.c.execute(statement)
+		
+	def commit():
+		self.conn.commit()
+		
+	def close():
+		self.conn.close()
+		del self
+		
+def newDB():
+	#TODO: Create a new database that fits the database schema exactly
