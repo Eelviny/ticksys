@@ -31,4 +31,8 @@ def codePrint(code):
 		output += format(code[i], 'X')
 	return output
 	
-
+def newCode():
+	#TODO: Link the database module to this
+	# Find the next available database ID and generate a code from it
+	newid = dbRead(dbid) + 1
+	return codeGen(newid)
