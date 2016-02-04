@@ -4,8 +4,8 @@
 def sumGen(ticketID):
 	idno = 0
 	# Multiply each value by its position, and add them together
-	for i in range(1,8):
-		idno += ticketID[i] * i
+	for i in range(7):
+		idno += ticketID[i] * i+1
 	hexno = format(idno, 'x')
 	# Take first and last values if the hex is larger than 2 digits
 	if len(hexno) > 2:
@@ -14,16 +14,10 @@ def sumGen(ticketID):
 	return [int(hexno[0], 16), int(hexno[1], 16)]
 	
 def sumRead(ticketID):
-	original = []
-	# Take all except the checksum
-	for i in range(8):
-		original.append(ticketID[i])
 	# Work out what the actual value is
-	original = sumGen(original)
+	original = sumGen(ticketID[0:7])
 	# Extract the checksum of the ticketID
-	actual = []
-	for i in range(2):
-		actual.append(i+7)
+	actual = ticketID[7:9]
 	if original == actual:
 		return True
 	else:
