@@ -18,7 +18,7 @@ class Database():
 		self.conn.close()
 		del self
 		
-	def read(self, table, query="")
+	def read(self, table, query=""):
 		if query == "":
 			self.execute('SELECT * FROM ?', table)
 		else:
@@ -34,7 +34,7 @@ class Database():
 		if table == 'orders':
 			self.execute('INSERT INTO orders (quantity, userID, ticketTypeID) VALUES (?,?,?)', values)
 			
-	def nextAvail(self)
+	def nextAvail(self):
 		self.c.lastrowid
 		
 		

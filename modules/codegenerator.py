@@ -14,15 +14,15 @@ def codeGen(dbid):
 	dbid = str(dbid)
 	dblist = []
 	# If the length of dbid is shorter than 3, add zeros to the start. No values submitted will be longer than 3 characters.
-	for i in range(len(dbid))
+	for i in range(len(dbid)):
 		dblist.append(int(dbid[i]))
 	while len(dblist) < 3:
-		dlist = [0] + dblist
+		dblist = [0] + dblist
 	
 	# Call the checksum module to generate a valid checksum for the code
-	csum = sumGen(dbid + randomauth)
+	csum = sumGen(dblist + randomauth)
 	
-	return dbid + randomauth + csum
+	return dblist + randomauth + csum
 	
 # Take an inputted, raw code list and turn it into a human readable string
 def codePrint(code):
