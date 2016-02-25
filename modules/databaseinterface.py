@@ -1,15 +1,17 @@
 # Database Interface Module
 import sqlite3
 
-# Requires the file access module to pass the database location to it. Until then, the path will be passed manually
-# TODO: Link file access to this
+global opendbs
+opendbs = []
+
+# File access will initialise the class
 class Database():
 	def __init__(self, dbname):
 		self.conn = sqlite3.connect(dbname)
 		self.c = self.conn.cursor()
 		
-	def execute(self, statement):
-		self.c.execute(statement)
+	#def execute(self, statement):
+	#	self.c.execute(statement)
 		
 	def commit(self):
 		self.conn.commit()
@@ -20,28 +22,29 @@ class Database():
 		
 	def read(self, table, query=""):
 		if query == "":
-			self.execute('SELECT * FROM ?', table)
+			self.c.execute('SELECT * FROM {0}'.format(table))
 		else:
-			query = [table, query]
-			self.execute('SELECT * FROM ? WHERE ?', query)
+			self.c.execute('SELECT * FROM {0} WHERE {1}'.format(table, query))
 		return self.c.fetchall()
 		
 	def write(self, table, values):
 		if table == 'ticket_types':
-			self.execute('INSERT INTO ticket_types (tName, tPrice, tInfo) VALUES (?,?,?)', values)
+			self.c.execute('INSERT INTO ticket_types (tName, tPrice, tInfo) VALUES (?,?,?)', values)
 		if table == 'userinfo':
-			self.execute('INSERT INTO userinfo (fName, lName, randomID) VALUES (?,?,?)', values)
+			self.c.execute('INSERT INTO userinfo (fName, lName, randomID) VALUES (?,?,?)', values)
 		if table == 'orders':
-			self.execute('INSERT INTO orders (quantity, userID, ticketTypeID) VALUES (?,?,?)', values)
+			self.c.execute('INSERT INTO orders (quantity, userID, ticketTypeID) VALUES (?,?,?)', values)
 			
 	def nextAvail(self):
 		self.c.lastrowid
 		
 		
-def newDB(path):
+def newDB(path, keepalive=True):
 	newdb = Database(path)
-	newdb.execute('CREATE TABLE ticket_types (ID INTEGER PRIMARY KEY AUTOINCREMENT, tName TEXT, tPrice INTEGER, tInfo TEXT);')
-	newdb.execute('CREATE TABLE userinfo (ID INT PRIMARY KEY AUTOINCREMENT, fName TEXT, lName TEXT, randomID CHAR(10));')
-	newdb.execute('CREATE TABLE orders (ID INT PRIMARY KEY AUTOINCREMENT, quantity INTEGER, userID INTEGER, ticketTypeID INTEGER);')
+	opendbs.append(newdb)
+	newdb.c.execute('CREATE TABLE ticket_types (ID INTEGER PRIMARY KEY AUTOINCREMENT, tName TEXT, tPrice INTEGER, tInfo TEXT);')
+	newdb.c.execute('CREATE TABLE userinfo (ID INTEGER PRIMARY KEY AUTOINCREMENT, fName TEXT, lName TEXT, randomID CHAR(10));')
+	newdb.c.execute('CREATE TABLE orders (ID INTEGER PRIMARY KEY AUTOINCREMENT, quantity INTEGER, userID INTEGER, ticketTypeID INTEGER);')
 	newdb.commit()
-	newdb.close()
+	if not keepalive:
+		newdb.close()
