@@ -4,6 +4,8 @@
   <requires lib="gtk+" version="3.16"/>
   <object class="GtkWindow" id="window1">
     <property name="can_focus">False</property>
+    <property name="default_width">400</property>
+    <property name="default_height">450</property>
     <signal name="delete-event" handler="onDeleteWindow" swapped="no"/>
     <child>
       <object class="GtkGrid" id="grid1">
@@ -19,7 +21,10 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="hexpand">True</property>
-            <property name="vexpand">True</property>
+            <property name="vexpand">False</property>
+            <property name="secondary_icon_stock">gtk-delete</property>
+            <property name="placeholder_text" translatable="yes">Enter Ticket Code Here...</property>
+            <signal name="icon-press" handler="entry1_icon_press_cb" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -34,7 +39,7 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="vexpand">True</property>
-            <signal name="clicked" handler="onButtonClick" swapped="no"/>
+            <signal name="clicked" handler="button1_clicked_cb" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -47,7 +52,9 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
+            <property name="hexpand">False</property>
             <property name="vexpand">True</property>
+            <signal name="clicked" handler="button2_clicked_cb" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -61,6 +68,7 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="vexpand">True</property>
+            <signal name="clicked" handler="button3_clicked_cb" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">2</property>
@@ -74,6 +82,7 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="vexpand">True</property>
+            <signal name="clicked" handler="button4_clicked_cb" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">3</property>
@@ -87,6 +96,7 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="vexpand">True</property>
+            <signal name="clicked" handler="button5_clicked_cb" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -100,6 +110,7 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="vexpand">True</property>
+            <signal name="clicked" handler="button6_clicked_cb" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -113,6 +124,7 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="vexpand">True</property>
+            <signal name="clicked" handler="button7_clicked_cb" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">2</property>
@@ -126,6 +138,7 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="vexpand">True</property>
+            <signal name="clicked" handler="button8_clicked_cb" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">3</property>
@@ -139,6 +152,7 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="vexpand">True</property>
+            <signal name="clicked" handler="button9_clicked_cb" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -152,6 +166,7 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="vexpand">True</property>
+            <signal name="clicked" handler="button10_clicked_cb" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -165,6 +180,7 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="vexpand">True</property>
+            <signal name="clicked" handler="button11_clicked_cb" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">2</property>
@@ -178,6 +194,7 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="vexpand">True</property>
+            <signal name="clicked" handler="button12_clicked_cb" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">3</property>
@@ -191,6 +208,7 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="vexpand">True</property>
+            <signal name="clicked" handler="button13_clicked_cb" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -204,6 +222,7 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="vexpand">True</property>
+            <signal name="clicked" handler="button14_clicked_cb" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -217,6 +236,7 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="vexpand">True</property>
+            <signal name="clicked" handler="button15_clicked_cb" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">2</property>
@@ -230,6 +250,7 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="vexpand">True</property>
+            <signal name="clicked" handler="button16_clicked_cb" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">3</property>
