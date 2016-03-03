@@ -3,6 +3,7 @@
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
+import codereader
 
 # Start the reader program class
 class Reader():
@@ -22,10 +23,14 @@ class Reader():
 	def textSet(self, text):
 		entry = self.builder.get_object("entry1")
 		entry.set_text(text)
+		#TODO: Make this work
 		if len(self.textGet()) >= 9:
-			# TODO: Link to code validation
-			print("Code:", self.textGet())
-			entry.set_text("")
+			try:
+				codereader.codeRead(0, codereader.codeConv(self.textGet()))
+				entry.set_text("")
+			except ValueError:
+				entry.set_text("Error!")
+
 	# Takes the existing text in entry1 and adds the character to it
 	def textAdd(self, text):
 		self.textSet(self.textGet() + text)
