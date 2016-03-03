@@ -4,6 +4,7 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
+# Start the reader program class
 class Reader():
 	def __init__(self):
 		self.builder = Gtk.Builder()
@@ -11,24 +12,30 @@ class Reader():
 		self.builder.connect_signals(self)
 		self.window = self.builder.get_object("window1")
 		self.window.show_all()
-		
+
+	# Fetches the text from entry1
+	def textGet(self):
+		entry = self.builder.get_object("entry1")
+		return entry.get_text()		
+
+	# Sets the text in entry1
 	def textSet(self, text):
 		entry = self.builder.get_object("entry1")
 		entry.set_text(text)
-		
-	def textGet(self):
-		entry = self.builder.get_object("entry1")
-		return entry.get_text()
-		
+		if len(self.textGet()) >= 9:
+			# TODO: Link to code validation
+			print("Code:", self.textGet())
+			entry.set_text("")
+	# Takes the existing text in entry1 and adds the character to it
 	def textAdd(self, text):
 		self.textSet(self.textGet() + text)
 		
 	def onDeleteWindow(self, *args):
 		Gtk.main_quit(*args)
 		
-	def entry1_icon_press_cb(self, i1, i2, i3):
+	# Each button is linked to one definition
+	def entry1_icon_press_cb(self, *args):
 		self.textSet("")
-		print(i1, i2, i3)
 
 	def button1_clicked_cb(self, button):
 		self.textAdd("0")
