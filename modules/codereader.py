@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # Code Reader Module
 from checksum import sumRead
 from databaseinterface import *

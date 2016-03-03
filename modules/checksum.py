@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # Checksum Module
 
 # Generate a checksum

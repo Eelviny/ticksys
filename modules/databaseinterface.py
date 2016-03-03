@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # Database Interface Module
 import sqlite3
 

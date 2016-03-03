@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # Code Generator Module
 import random
 from checksum import *
