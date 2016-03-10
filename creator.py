@@ -3,7 +3,7 @@
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
-import codereader
+import codegenerator
 
 # Start the reader program class
 class Creator():
@@ -29,9 +29,13 @@ class Creator():
 	def onDeleteWindow(self, *args):
 		Gtk.main_quit(*args)
 		
-	def addItem(ticket, price):
+	def addItem(self, ticket, price):
 		liststore1.append([ticket, price])
 		
+	def codeSet(self, code):
+		clabel = self.builder.get_object("label2")
+		clabel.set_text(codegenerator.codePrint(codegenerator.codeGen(1))
+		
 
-main = Creator()
+main = Creator() 
 Gtk.main()
