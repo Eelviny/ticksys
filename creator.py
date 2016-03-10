@@ -13,16 +13,19 @@ class Creator():
 		self.builder.connect_signals(self)
 		self.liststore1 = Gtk.ListStore(str, str)
 		self.window = self.builder.get_object("window1")
-		print(self.builder.get_objects()) # debug code
 		
 		self.treeview = self.builder.get_object("treeview1")
-		self.cell0 = Gtk.CellRendererText()
-		self.col0 = Gtk.TreeViewColumn("Ticket Type", self.cell0, text=0)
-		self.col1 = Gtk.TreeViewColumn("Price", self.cell0, text=0)
-		self.treeview.append_column(self.col0)
-		self.treeview.append_column(self.col1)
+		for i, column_title in enumerate(["Ticket Type", "Price"]):
+			renderer = Gtk.CellRendererText()
+			column = Gtk.TreeViewColumn(column_title, renderer, text=i)
+			self.treeview.append_column(column)
+
 		self.treeview.set_model(self.liststore1)
 		#self.treeview.set_reorderable(True)
+		
+		self.tickets = [["testing", "123"], ["testing", "456"], ["testing", "789"], ["testing", "012"]]
+		# The GTK list is not very useful for python usage, so create a duplicate python list alongside
+		self.ticketlist = []
 		
 		self.window.show_all()
 	
@@ -34,8 +37,37 @@ class Creator():
 		
 	def codeSet(self, code):
 		clabel = self.builder.get_object("label2")
-		clabel.set_text(codegenerator.codePrint(codegenerator.codeGen(1))
+		clabel.set_text(codegenerator.codePrint(codegenerator.codeGen(1)))
+	
+	def addValue(self, value):
+		self.liststore1.append(self.tickets[value])
+		self.ticketlist.append(self.tickets[value])
 		
+	def clearTable(self):
+		print("Removing:", self.ticketlist)
+		self.liststore1.clear()
+		self.ticketlist = []
+		
+	def on_button1_clicked(self, *args):
+		self.addValue(0)
+		
+	def on_button2_clicked(self, *args):
+		self.addValue(1)
+		
+	def on_button3_clicked(self, *args):
+		self.addValue(2)
 
+	def on_button4_clicked(self, *args):
+		self.addValue(3)
+	
+	def on_clear_clicked(self, *args):
+		self.clearTable()
+	
+	def on_open_clicked(self, *args):
+		print("Open") # TODO: Link to database module
+		
+	def on_save_clicked(self, *args):
+		print("Save") # TODO: Link to database module
+		
 main = Creator() 
 Gtk.main()
