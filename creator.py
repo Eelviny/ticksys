@@ -12,24 +12,25 @@ class Creator():
 		self.builder.add_from_file("creator.glade")
 		self.builder.connect_signals(self)
 		self.liststore1 = Gtk.ListStore(str, str)
-		self.liststore1.append(["test1", "test2"])
-		self.liststore1.append(["test3", "test4"])
-		self.liststore1.append(["test5", "test6"])
 		self.window = self.builder.get_object("window1")
 		print(self.builder.get_objects()) # debug code
 		
 		self.treeview = self.builder.get_object("treeview1")
-		self.C_DATA_COLUMN_NUMBER_IN_MODEL = 0
 		self.cell0 = Gtk.CellRendererText()
-		self.col0 = Gtk.TreeViewColumn("title", self.cell0, text=self.C_DATA_COLUMN_NUMBER_IN_MODEL)
-		self.col1 = Gtk.TreeViewColumn("title2", self.cell0, text=self.C_DATA_COLUMN_NUMBER_IN_MODEL)
+		self.col0 = Gtk.TreeViewColumn("Ticket Type", self.cell0, text=0)
+		self.col1 = Gtk.TreeViewColumn("Price", self.cell0, text=0)
 		self.treeview.append_column(self.col0)
 		self.treeview.append_column(self.col1)
-
 		self.treeview.set_model(self.liststore1)
-		self.treeview.set_reorderable(True)
+		#self.treeview.set_reorderable(True)
 		
 		self.window.show_all()
+	
+	def onDeleteWindow(self, *args):
+		Gtk.main_quit(*args)
+		
+	def addItem(ticket, price):
+		liststore1.append([ticket, price])
 		
 
 main = Creator()
