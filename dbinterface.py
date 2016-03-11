@@ -49,9 +49,10 @@ class Database():
 	def newEntry(self, fName, lName, randomID, tickets):
 		self.write("user_info", (fName, lName, randomID))
 		# Find the database set ID
-		dbstring = self.read("user_info", "randomID={0}".format(randomID))
-		for i in enumerate(tickets):
-			self.write("orders", "1", dbstring[0], tickets[i])
+		dbid = self.read("user_info", "randomID={0}".format(randomID))[0]
+		# Enumerate returns a list with first item: index, second item: value
+		for typ, quant in enumerate(tickets):
+			self.write("orders", (quant, dbid, typ))
 			
 	def nextAvail(self):
 		self.c.lastrowid
