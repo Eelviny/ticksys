@@ -93,11 +93,16 @@ class Creator():
 	def on_save_clicked(self, *args):
 		fName = self.entry1.get_text()
 		lName = self.entry2.get_text()
-		if self.ticketlist != [0,0,0,0] and fName != "" and lName != "":
+		# Do not allow saving if fields are empty
+		if self.ticketlist != [0,0,0,0] and fName != "" and fName != "Incomplete" and lName != "" and lName != "Incomplete":
 			dbinterface.dbrunning[database].newEntry(fName, lName, self.code, self.ticketlist)
 			self.clearTable()
 			print(dbinterface.dbrunning[database].read("user_info"))
 			print(dbinterface.dbrunning[database].read("orders"))
+		if fName == "":
+			self.entry1.set_text("Incomplete")
+		if lName == "":
+			self.entry2.set_text("Incomplete")
 		
 # TODO: Create a file browser so it doesn't use the test database
 dbinterface.sampleDB() # testing code
