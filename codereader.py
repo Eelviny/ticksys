@@ -2,7 +2,7 @@
 
 # Code Reader Module
 from checksum import sumRead
-from databaseinterface import *
+from dbinterface import *
 
 def codeRead(database, ticketID):
 	for i in range(len(ticketID)):

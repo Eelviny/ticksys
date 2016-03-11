@@ -3,7 +3,7 @@
 # Code Generator Module
 import random
 from checksum import *
-from databaseinterface import *
+from dbinterface import *
 
 # The heart of the module - creating the code.
 def codeGen(dbid):

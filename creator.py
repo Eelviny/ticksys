@@ -4,6 +4,7 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 import codegenerator
+import dbinterface
 
 # Start the reader program class
 class Creator():
@@ -25,7 +26,7 @@ class Creator():
 		
 		self.tickets = [["testing", "123"], ["testing", "456"], ["testing", "789"], ["testing", "012"]]
 		# The GTK list is not very useful for python usage, so create a duplicate python list alongside
-		self.ticketlist = []
+		self.ticketlist = [0,0,0,0]
 		
 		self.window.show_all()
 	
@@ -41,12 +42,15 @@ class Creator():
 	
 	def addValue(self, value):
 		self.liststore1.append(self.tickets[value])
-		self.ticketlist.append(self.tickets[value])
+		self.ticketlist[value] += 1
+		print(self.ticketlist)
 		
 	def clearTable(self):
 		print("Removing:", self.ticketlist)
 		self.liststore1.clear()
-		self.ticketlist = []
+		self.ticketlist = [0,0,0,0]
+		
+	#def saveToDB(self, 
 		
 	def on_button1_clicked(self, *args):
 		self.addValue(0)
@@ -68,6 +72,7 @@ class Creator():
 		
 	def on_save_clicked(self, *args):
 		print("Save") # TODO: Link to database module
-		
+
+#dbinterface.newDB(":memory:") # testing code
 main = Creator() 
 Gtk.main()
