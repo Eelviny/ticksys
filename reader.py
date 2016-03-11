@@ -23,16 +23,18 @@ class Reader():
 	def textSet(self, text):
 		entry = self.builder.get_object("entry1")
 		entry.set_text(text)
-		#TODO: Make this work
 		if len(self.textGet()) >= 9:
 			try:
 				codereader.codeRead(0, codereader.codeConv(self.textGet()))
 				entry.set_text("")
 			except ValueError:
-				entry.set_text("Error!")
+				entry.set_placeholder_text("Error!")
 
 	# Takes the existing text in entry1 and adds the character to it
 	def textAdd(self, text):
+		# Clear the textbox once the user starts typing again
+		if self.textGet() == "Error!":
+			self.textSet("")
 		self.textSet(self.textGet() + text)
 		
 	def onDeleteWindow(self, *args):
