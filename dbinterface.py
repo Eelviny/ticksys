@@ -69,7 +69,7 @@ class Database():
 		
 def newDB(path, keepalive=True):
 	newdb = Database(path)
-	newdb.execute('CREATE TABLE ticket_types (ID INTEGER PRIMARY KEY AUTOINCREMENT, tName TEXT, tPrice INTEGER, tInfo TEXT);')
+	newdb.execute('CREATE TABLE ticket_types (ID INTEGER PRIMARY KEY AUTOINCREMENT, tName TEXT, tPrice DECIMAL(10,2), tInfo TEXT);')
 	newdb.execute('CREATE TABLE user_info (ID INTEGER PRIMARY KEY AUTOINCREMENT, fName TEXT, lName TEXT, code CHAR(10));')
 	newdb.execute('CREATE TABLE orders (ID INTEGER PRIMARY KEY AUTOINCREMENT, quantity INTEGER, userID INTEGER, ticketTypeID INTEGER);')
 	newdb.commit()
@@ -79,7 +79,7 @@ def newDB(path, keepalive=True):
 # Purely for debugging and testing purposes. Create an already populated database for test usage
 def sampleDB():
 	newDB(":memory:")
-	dbrunning[0].write("ticket_types", ("Adult", "20", "A fully grown human being."))
-	dbrunning[0].write("ticket_types", ("Child", "10", "A slightly smaller human being."))
-	dbrunning[0].write("ticket_types", ("Student", "12", "A youthful human being."))
-	dbrunning[0].write("ticket_types", ("Senior", "18", "An old human being."))
+	dbrunning[0].write("ticket_types", ("Adult", "20.08", "A fully grown human being."))
+	dbrunning[0].write("ticket_types", ("Child", "10.50", "A slightly smaller human being."))
+	dbrunning[0].write("ticket_types", ("Student", "12.10", "A youthful human being."))
+	dbrunning[0].write("ticket_types", ("Senior", "18.46", "An old human being."))

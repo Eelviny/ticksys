@@ -3,6 +3,8 @@
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
+import locale # Used for formatting strings to local currency
+locale.setlocale( locale.LC_ALL, 'en_GB.UTF-8' )
 import codegenerator
 import dbinterface
 
@@ -24,15 +26,15 @@ class Creator():
 			self.treeview.append_column(column)
 
 		self.treeview.set_model(self.liststore1)
+		
 		# Translate the database ticket types into a GUI list
-		ticket = dbinterface.dbrunning[database].read("ticket_types")
-		#self.tickets = [[str(ticket[0][1]), "£ "+str(ticket[0][2])], [str(ticket[1][1]), "£ "+str(ticket[1][2])], [str(ticket[2][1]), "£ "+str(ticket[2][2])], [str(ticket[3][1]), "£ "+str(ticket[3][2])]]
+		self.dbticket = dbinterface.dbrunning[database].read("ticket_types")
 		self.tickets = []
 		for i in range(4):
-			self.tickets.append([ticket[i][1], str(ticket[i][2])])
+			self.tickets.append([self.dbticket[i][1], str(locale.currency(self.dbticket[i][2]))])
 			button = self.builder.get_object("button{0}".format(str(i+1)))
-			button.set_label(ticket[i][1])
-			button.set_tooltip_text(ticket[i][3])
+			button.set_label(self.dbticket[i][1])
+			button.set_tooltip_text(self.dbticket[i][3])
 		print(self.tickets)
 		# The GTK list is not very useful for python usage, so create a duplicate python list alongside
 		self.clearTable()
@@ -52,7 +54,8 @@ class Creator():
 	def addValue(self, value):
 		self.liststore1.append(self.tickets[value])
 		self.ticketlist[value] += 1
-		print(self.ticketlist)
+		print(self.ticketlist) # debug code
+		self.updatePrice()
 		
 	def clearTable(self):
 		self.liststore1.clear()
@@ -60,8 +63,14 @@ class Creator():
 		self.entry1.set_text("")
 		self.entry2.set_text("")
 		self.code = codegenerator.codePrint(codegenerator.newCode(database))
-		label2 = self.builder.get_object("label2")
-		label2.set_text(str("Code: "+self.code))
+		self.builder.get_object("label2").set_text(str("Code: "+self.code))
+		self.updatePrice()
+		
+	def updatePrice(self):
+		price = 0.0
+		for i in range(4):
+			price += self.ticketlist[i] * self.dbticket[i][2]
+		self.builder.get_object("label1").set_text(str(locale.currency(price)))
 		
 	def on_button1_clicked(self, *args):
 		self.addValue(0)
