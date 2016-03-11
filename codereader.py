@@ -5,17 +5,13 @@ from checksum import sumRead
 from dbinterface import *
 
 def codeRead(database, ticketID):
-	for i in range(len(ticketID)):
-		ticketID[i] = int(ticketID[i], 16)
-	if not sumRead(ticketID):
+	listID = codeConv(ticketID)
+	if not sumRead(listID):
 		raise ValueError
-	randomID = ticketID[3:7]
-	runningdbs[database].read('userinfo', 'randomID={0}').format(randomID)
-	# TODO: Finish databaseinterface module so this can read directly from db
-	
+	return dbrunning[database].read("user_info", "code='{0}'".format(ticketID))
 		
 def codeConv(ticketID):
 	ticketList = []
 	for i in ticketID:
-		ticketList.append(i)
+		ticketList.append(int(i, 16))
 	return ticketList
