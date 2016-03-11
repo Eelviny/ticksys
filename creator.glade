@@ -20,10 +20,11 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="vexpand">True</property>
+            <property name="border_width">1</property>
             <signal name="clicked" handler="on_button1_clicked" swapped="no"/>
           </object>
           <packing>
-            <property name="left_attach">1</property>
+            <property name="left_attach">2</property>
             <property name="top_attach">1</property>
           </packing>
         </child>
@@ -35,10 +36,11 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="vexpand">True</property>
+            <property name="border_width">1</property>
             <signal name="clicked" handler="on_button2_clicked" swapped="no"/>
           </object>
           <packing>
-            <property name="left_attach">1</property>
+            <property name="left_attach">2</property>
             <property name="top_attach">2</property>
           </packing>
         </child>
@@ -50,10 +52,11 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="vexpand">True</property>
+            <property name="border_width">1</property>
             <signal name="clicked" handler="on_button3_clicked" swapped="no"/>
           </object>
           <packing>
-            <property name="left_attach">1</property>
+            <property name="left_attach">2</property>
             <property name="top_attach">3</property>
           </packing>
         </child>
@@ -65,31 +68,32 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="vexpand">True</property>
+            <property name="border_width">1</property>
             <signal name="clicked" handler="on_button4_clicked" swapped="no"/>
           </object>
           <packing>
-            <property name="left_attach">1</property>
+            <property name="left_attach">2</property>
             <property name="top_attach">4</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="label1">
+            <property name="height_request">50</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="vexpand">True</property>
             <property name="label" translatable="yes">Price</property>
           </object>
           <packing>
-            <property name="left_attach">1</property>
+            <property name="left_attach">2</property>
             <property name="top_attach">5</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="label2">
+            <property name="height_request">50</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="hexpand">True</property>
-            <property name="vexpand">True</property>
             <property name="label" translatable="yes">Code</property>
             <property name="selectable">True</property>
             <style>
@@ -99,6 +103,7 @@
           <packing>
             <property name="left_attach">0</property>
             <property name="top_attach">5</property>
+            <property name="width">2</property>
           </packing>
         </child>
         <child>
@@ -122,21 +127,6 @@
               </packing>
             </child>
             <child>
-              <object class="GtkToolButton" id="save">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="tooltip_text" translatable="yes">Save tickets to database</property>
-                <property name="label" translatable="yes">Save</property>
-                <property name="use_underline">True</property>
-                <property name="icon_name">document-save</property>
-                <signal name="clicked" handler="on_save_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
               <object class="GtkToolButton" id="clear">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -151,11 +141,25 @@
                 <property name="homogeneous">True</property>
               </packing>
             </child>
+            <child>
+              <object class="GtkToolButton" id="save">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Save tickets to database</property>
+                <property name="label" translatable="yes">Save</property>
+                <property name="use_underline">True</property>
+                <property name="icon_name">document-save</property>
+                <signal name="clicked" handler="on_save_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
           </object>
           <packing>
-            <property name="left_attach">0</property>
+            <property name="left_attach">2</property>
             <property name="top_attach">0</property>
-            <property name="width">2</property>
           </packing>
         </child>
         <child>
@@ -176,7 +180,34 @@
           <packing>
             <property name="left_attach">0</property>
             <property name="top_attach">1</property>
+            <property name="width">2</property>
             <property name="height">4</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="entry1">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="margin_left">5</property>
+            <property name="margin_right">5</property>
+            <property name="placeholder_text" translatable="yes">First Name</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="entry2">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="margin_left">5</property>
+            <property name="margin_right">5</property>
+            <property name="placeholder_text" translatable="yes">Last Name</property>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">0</property>
           </packing>
         </child>
       </object>

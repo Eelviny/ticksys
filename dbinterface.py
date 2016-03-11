@@ -54,9 +54,13 @@ class Database():
 		for typ, quant in enumerate(tickets):
 			self.write("orders", (quant, dbid, typ))
 			
-	def nextAvail(self):
-		self.c.lastrowid
-		
+	def nextAvail(self, table):
+		self.c.execute('SELECT max(ID) FROM {0}'.format(table))
+		value = self.c.fetchone()[0]
+		if value == None:
+			return 1
+		else:
+			return value + 1
 		
 def newDB(path, keepalive=True):
 	newdb = Database(path)

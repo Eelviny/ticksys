@@ -5,12 +5,15 @@ import random
 from checksum import *
 from dbinterface import *
 
-# The heart of the module - creating the code.
-def codeGen(dbid):
-	# Generate a 4-digit random hexadecimal string and store
+def randomCode():
+	# Generate a 4-digit random hexadecimal string
 	randomauth = []
 	for i in range(0,4): 
 		randomauth.append(random.randint(0,15))
+	return randomauth
+
+# The heart of the module - creating the code. If not supplied with a code, create one anyway
+def codeGen(dbid, randomauth=randomCode()):
 	
 	# Take the inputted database ID
 	dbid = str(dbid)
