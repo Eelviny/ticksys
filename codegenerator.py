@@ -12,8 +12,11 @@ def randomCode():
 		randomauth.append(random.randint(0,15))
 	return randomauth
 
-# The heart of the module - creating the code. If not supplied with a code, create one anyway
-def codeGen(dbid, randomauth=randomCode()):
+# The heart of the module - creating the code. If not supplied with a random code, create one anyway
+def codeGen(dbid, randomauth=""):
+
+	if randomauth == "":
+		randomauth = randomCode()
 	# Take the inputted database ID
 	dbid = str(dbid)
 	dblist = []
