@@ -47,7 +47,7 @@ class Reader():
 		if len(self.textGet()) >= 9:
 			try:
 				# fetch the user info for the relevant code using codereader
-				info = codereader.codeRead(database, self.textGet())
+				info = codereader.codeRead(database, self.textGet().upper())
 				print(info) # debug code
 				orders = dbinterface.dbrunning[database].read("orders", "userID={0}".format(info[0][0]))
 				print(orders) # debug code
