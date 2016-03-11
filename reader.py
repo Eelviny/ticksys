@@ -31,6 +31,18 @@ class Reader():
 	# Sets the text in entry1
 	def textSet(self, text):
 		self.entry1.set_text(text)
+		
+
+	# Takes the existing text in entry1 and adds the character to it
+	def textAdd(self, text):
+		# Clear the textbox after an error once the user starts tapping again
+		if self.textGet() == "Error!":
+			self.textSet("")
+		self.textSet(self.textGet() + text)
+		
+	# Whenever the text changes, call the updater
+	def textUpdate(self):
+		print("update")
 		# The magic part of the program. Once the value is long enough, cue the info
 		if len(self.textGet()) >= 9:
 			try:
@@ -61,14 +73,7 @@ class Reader():
 				self.entry1.set_text("")
 			except ValueError:
 				# If the checksum fails, handle graceully and give a nice error message to the user
-				self.entry1.set_text("Error!")
-
-	# Takes the existing text in entry1 and adds the character to it
-	def textAdd(self, text):
-		# Clear the textbox after an error once the user starts typing again
-		if self.textGet() == "Error!":
-			self.textSet("")
-		self.textSet(self.textGet() + text)
+				self.textSet("Error!")
 		
 	# Close all windows on the deletion of the top-level window
 	def onDeleteWindow(self, *args):
@@ -126,6 +131,11 @@ class Reader():
 		
 	def on_button16_clicked(self, *args):
 		self.textAdd("F")
+	
+	# Detect changes to entry1, and trigger the text update
+	def on_entry1_changed(self, *args):
+		self.textUpdate()
+		
 		
 	# When the popup is finished with, don't destroy it - hide it away for the next use
 	# The close button on the popup is disabled, so the only way to get rid of it is to use button17
