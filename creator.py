@@ -14,6 +14,8 @@ class Creator():
 		self.builder.connect_signals(self)
 		self.liststore1 = Gtk.ListStore(str, str)
 		self.window = self.builder.get_object("window1")
+		self.entry1 = self.builder.get_object("entry1")
+		self.entry2 = self.builder.get_object("entry2")
 		
 		self.treeview = self.builder.get_object("treeview1")
 		for i, column_title in enumerate(["Ticket Type", "Price"]):
@@ -22,8 +24,16 @@ class Creator():
 			self.treeview.append_column(column)
 
 		self.treeview.set_model(self.liststore1)
-		#self.treeview.set_reorderable(True)
-		self.tickets = [["testing", "123"], ["Another", "456"], ["test", "453"], ["Hi there", "952"]]
+		# Translate the database ticket types into a GUI list
+		ticket = dbinterface.dbrunning[database].read("ticket_types")
+		#self.tickets = [[str(ticket[0][1]), "£ "+str(ticket[0][2])], [str(ticket[1][1]), "£ "+str(ticket[1][2])], [str(ticket[2][1]), "£ "+str(ticket[2][2])], [str(ticket[3][1]), "£ "+str(ticket[3][2])]]
+		self.tickets = []
+		for i in range(4):
+			self.tickets.append([ticket[i][1], str(ticket[i][2])])
+			button = self.builder.get_object("button{0}".format(str(i+1)))
+			button.set_label(ticket[i][1])
+			button.set_tooltip_text(ticket[i][3])
+		print(self.tickets)
 		# The GTK list is not very useful for python usage, so create a duplicate python list alongside
 		self.clearTable()
 		
@@ -47,11 +57,11 @@ class Creator():
 	def clearTable(self):
 		self.liststore1.clear()
 		self.ticketlist = [0,0,0,0]
-		self.code = codegenerator.codePrint(codegenerator.newCode(0))
-		
-	#def newCode(self, 
-		
-	#def saveToDB(self, 
+		self.entry1.set_text("")
+		self.entry2.set_text("")
+		self.code = codegenerator.codePrint(codegenerator.newCode(database))
+		label2 = self.builder.get_object("label2")
+		label2.set_text(str("Code: "+self.code))
 		
 	def on_button1_clicked(self, *args):
 		self.addValue(0)
@@ -72,10 +82,8 @@ class Creator():
 		print("Open") # TODO: Link to database module
 		
 	def on_save_clicked(self, *args):
-		entry1 = self.builder.get_object("entry1")
-		entry2 = self.builder.get_object("entry2")
-		fName = entry1.get_text()
-		lName = entry2.get_text()
+		fName = self.entry1.get_text()
+		lName = self.entry2.get_text()
 		if self.ticketlist != [0,0,0,0] and fName != "" and lName != "":
 			dbinterface.dbrunning[database].newEntry(fName, lName, self.code, self.ticketlist)
 			self.clearTable()
@@ -83,7 +91,7 @@ class Creator():
 			print(dbinterface.dbrunning[database].read("orders"))
 		
 # TODO: Create a file browser so it doesn't use the test database
-dbinterface.newDB(":memory:") # testing code
+dbinterface.sampleDB() # testing code
 database = 0
 
 main = Creator() 

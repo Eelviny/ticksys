@@ -75,3 +75,11 @@ def newDB(path, keepalive=True):
 	newdb.commit()
 	if not keepalive:
 		newdb.close()
+
+# Purely for debugging and testing purposes. Create an already populated database for test usage
+def sampleDB():
+	newDB(":memory:")
+	dbrunning[0].write("ticket_types", ("Adult", "20", "A fully grown human being."))
+	dbrunning[0].write("ticket_types", ("Child", "10", "A slightly smaller human being."))
+	dbrunning[0].write("ticket_types", ("Student", "12", "A youthful human being."))
+	dbrunning[0].write("ticket_types", ("Senior", "18", "An old human being."))
