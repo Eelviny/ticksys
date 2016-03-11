@@ -20,6 +20,7 @@ def sumRead(ticketID):
 	original = sumGen(ticketID[0:7])
 	# Extract the checksum of the ticketID
 	actual = ticketID[7:9]
+	# Return true if the two checksums match
 	if original == actual:
 		return True
 	else:

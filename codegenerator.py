@@ -8,13 +8,14 @@ from dbinterface import *
 def randomCode():
 	# Generate a 4-digit random hexadecimal string
 	randomauth = []
+	# values 0 to 15 for hexadecimal
 	for i in range(0,4): 
 		randomauth.append(random.randint(0,15))
 	return randomauth
 
-# The heart of the module - creating the code. If not supplied with a random code, create one anyway
+# The heart of the module - creating the code.
 def codeGen(dbid, randomauth=""):
-
+	# If not supplied with a random code, create one anyway
 	if randomauth == "":
 		randomauth = randomCode()
 	# Take the inputted database ID
@@ -35,6 +36,7 @@ def codeGen(dbid, randomauth=""):
 def codePrint(code):
 	output = ""
 	for i in range(len(code)):
+		# Format the integers with X, capital hexadecimal
 		output += format(code[i], 'X')
 	return output
 	
