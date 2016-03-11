@@ -39,20 +39,25 @@ class Database():
 		return self.c.fetchall()
 		
 	def write(self, table, values):
+		dbid = self.nextAvail(table)
 		if table == 'ticket_types':
 			self.c.execute('INSERT INTO ticket_types (tName, tPrice, tInfo) VALUES {0}'.format(values))
 		if table == 'user_info':
-			self.c.execute('INSERT INTO user_info (fName, lName, randomID) VALUES {0}'.format(values))
+			self.c.execute('INSERT INTO user_info (fName, lName, code) VALUES {0}'.format(values))
 		if table == 'orders':
 			self.c.execute('INSERT INTO orders (quantity, userID, ticketTypeID) VALUES {0}'.format(values))
+		return dbid
 			
 	def newEntry(self, fName, lName, randomID, tickets):
-		self.write("user_info", (fName, lName, randomID))
-		# Find the database set ID
-		dbid = self.read("user_info", "randomID={0}".format(randomID))[0]
+		for i in range(3):
+			tickets[i] = str(tickets[i])
+		# Find the database set ID while writing
+		dbid = self.write("user_info", (fName, lName, randomID))
 		# Enumerate returns a list with first item: index, second item: value
 		for typ, quant in enumerate(tickets):
-			self.write("orders", (quant, dbid, typ))
+			# Only write orders to the database if there is 1 or more items
+			if int(quant) > 0:
+				self.write("orders", (quant, dbid, typ))
 			
 	def nextAvail(self, table):
 		self.c.execute('SELECT max(ID) FROM {0}'.format(table))
@@ -65,7 +70,7 @@ class Database():
 def newDB(path, keepalive=True):
 	newdb = Database(path)
 	newdb.execute('CREATE TABLE ticket_types (ID INTEGER PRIMARY KEY AUTOINCREMENT, tName TEXT, tPrice INTEGER, tInfo TEXT);')
-	newdb.execute('CREATE TABLE user_info (ID INTEGER PRIMARY KEY AUTOINCREMENT, fName TEXT, lName TEXT, randomID CHAR(10));')
+	newdb.execute('CREATE TABLE user_info (ID INTEGER PRIMARY KEY AUTOINCREMENT, fName TEXT, lName TEXT, code CHAR(10));')
 	newdb.execute('CREATE TABLE orders (ID INTEGER PRIMARY KEY AUTOINCREMENT, quantity INTEGER, userID INTEGER, ticketTypeID INTEGER);')
 	newdb.commit()
 	if not keepalive:

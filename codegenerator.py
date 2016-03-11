@@ -14,7 +14,6 @@ def randomCode():
 
 # The heart of the module - creating the code. If not supplied with a code, create one anyway
 def codeGen(dbid, randomauth=randomCode()):
-	
 	# Take the inputted database ID
 	dbid = str(dbid)
 	dblist = []
@@ -36,8 +35,7 @@ def codePrint(code):
 		output += format(code[i], 'X')
 	return output
 	
-def newCode():
-	#TODO: Link the database module to this
+def newCode(db):
 	# Find the next available database ID and generate a code from it
-	newid = dbRead(dbid) + 1
-	return codeGen(newid)
+	dbid = dbrunning[db].nextAvail("user_info")
+	return codeGen(dbid)

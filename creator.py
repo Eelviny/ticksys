@@ -23,10 +23,9 @@ class Creator():
 
 		self.treeview.set_model(self.liststore1)
 		#self.treeview.set_reorderable(True)
-		
-		self.tickets = [["testing", "123"], ["testing", "456"], ["testing", "789"], ["testing", "012"]]
+		self.tickets = [["testing", "123"], ["Another", "456"], ["test", "453"], ["Hi there", "952"]]
 		# The GTK list is not very useful for python usage, so create a duplicate python list alongside
-		self.ticketlist = [0,0,0,0]
+		self.clearTable()
 		
 		self.window.show_all()
 	
@@ -46,9 +45,11 @@ class Creator():
 		print(self.ticketlist)
 		
 	def clearTable(self):
-		print("Removing:", self.ticketlist)
 		self.liststore1.clear()
 		self.ticketlist = [0,0,0,0]
+		self.code = codegenerator.codePrint(codegenerator.newCode(0))
+		
+	#def newCode(self, 
 		
 	#def saveToDB(self, 
 		
@@ -71,8 +72,19 @@ class Creator():
 		print("Open") # TODO: Link to database module
 		
 	def on_save_clicked(self, *args):
-		print("Save") # TODO: Link to database module
+		entry1 = self.builder.get_object("entry1")
+		entry2 = self.builder.get_object("entry2")
+		fName = entry1.get_text()
+		lName = entry2.get_text()
+		if self.ticketlist != [0,0,0,0] and fName != "" and lName != "":
+			dbinterface.dbrunning[database].newEntry(fName, lName, self.code, self.ticketlist)
+			self.clearTable()
+			print(dbinterface.dbrunning[database].read("user_info"))
+			print(dbinterface.dbrunning[database].read("orders"))
+		
+# TODO: Create a file browser so it doesn't use the test database
+dbinterface.newDB(":memory:") # testing code
+database = 0
 
-#dbinterface.newDB(":memory:") # testing code
 main = Creator() 
 Gtk.main()
