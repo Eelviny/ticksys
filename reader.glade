@@ -26,7 +26,7 @@
             <property name="vexpand">False</property>
             <property name="secondary_icon_stock">gtk-delete</property>
             <property name="placeholder_text" translatable="yes">Enter Ticket Code Here...</property>
-            <signal name="icon-press" handler="entry1_icon_press_cb" swapped="no"/>
+            <signal name="icon-press" handler="on_entry1_icon_press" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -41,7 +41,7 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="vexpand">True</property>
-            <signal name="clicked" handler="button1_clicked_cb" swapped="no"/>
+            <signal name="clicked" handler="on_button1_clicked" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -56,7 +56,7 @@
             <property name="receives_default">True</property>
             <property name="hexpand">False</property>
             <property name="vexpand">True</property>
-            <signal name="clicked" handler="button2_clicked_cb" swapped="no"/>
+            <signal name="clicked" handler="on_button2_clicked" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -70,7 +70,7 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="vexpand">True</property>
-            <signal name="clicked" handler="button3_clicked_cb" swapped="no"/>
+            <signal name="clicked" handler="on_button3_clicked" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">2</property>
@@ -84,7 +84,7 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="vexpand">True</property>
-            <signal name="clicked" handler="button4_clicked_cb" swapped="no"/>
+            <signal name="clicked" handler="on_button4_clicked" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">3</property>
@@ -98,7 +98,7 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="vexpand">True</property>
-            <signal name="clicked" handler="button5_clicked_cb" swapped="no"/>
+            <signal name="clicked" handler="on_button5_clicked" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -112,7 +112,7 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="vexpand">True</property>
-            <signal name="clicked" handler="button6_clicked_cb" swapped="no"/>
+            <signal name="clicked" handler="on_button6_clicked" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -126,7 +126,7 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="vexpand">True</property>
-            <signal name="clicked" handler="button7_clicked_cb" swapped="no"/>
+            <signal name="clicked" handler="on_button7_clicked" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">2</property>
@@ -140,7 +140,7 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="vexpand">True</property>
-            <signal name="clicked" handler="button8_clicked_cb" swapped="no"/>
+            <signal name="clicked" handler="on_button8_clicked" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">3</property>
@@ -154,7 +154,7 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="vexpand">True</property>
-            <signal name="clicked" handler="button9_clicked_cb" swapped="no"/>
+            <signal name="clicked" handler="on_button9_clicked" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -168,7 +168,7 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="vexpand">True</property>
-            <signal name="clicked" handler="button10_clicked_cb" swapped="no"/>
+            <signal name="clicked" handler="on_button10_clicked" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -182,7 +182,7 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="vexpand">True</property>
-            <signal name="clicked" handler="button11_clicked_cb" swapped="no"/>
+            <signal name="clicked" handler="on_button11_clicked" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">2</property>
@@ -196,7 +196,7 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="vexpand">True</property>
-            <signal name="clicked" handler="button12_clicked_cb" swapped="no"/>
+            <signal name="clicked" handler="on_button12_clicked" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">3</property>
@@ -210,7 +210,7 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="vexpand">True</property>
-            <signal name="clicked" handler="button13_clicked_cb" swapped="no"/>
+            <signal name="clicked" handler="on_button13_clicked" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -224,7 +224,7 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="vexpand">True</property>
-            <signal name="clicked" handler="button14_clicked_cb" swapped="no"/>
+            <signal name="clicked" handler="on_button14_clicked" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -238,7 +238,7 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="vexpand">True</property>
-            <signal name="clicked" handler="button15_clicked_cb" swapped="no"/>
+            <signal name="clicked" handler="on_button15_clicked" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">2</property>
@@ -252,11 +252,129 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="vexpand">True</property>
-            <signal name="clicked" handler="button16_clicked_cb" swapped="no"/>
+            <signal name="clicked" handler="on_button16_clicked" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">3</property>
             <property name="top_attach">4</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkWindow" id="window2">
+    <property name="width_request">250</property>
+    <property name="height_request">200</property>
+    <property name="can_focus">False</property>
+    <property name="destroy_with_parent">True</property>
+    <property name="deletable">False</property>
+    <child>
+      <object class="GtkBox" id="box1">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkLabel" id="label1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">start</property>
+            <property name="margin_left">10</property>
+            <property name="margin_right">10</property>
+            <property name="hexpand">True</property>
+            <property name="vexpand">True</property>
+            <property name="label" translatable="yes">Firstname, Lastname</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label2">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">start</property>
+            <property name="margin_left">10</property>
+            <property name="margin_right">10</property>
+            <property name="hexpand">True</property>
+            <property name="vexpand">True</property>
+            <property name="label" translatable="yes">Ticket 1: xx</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label3">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">start</property>
+            <property name="margin_left">10</property>
+            <property name="margin_right">10</property>
+            <property name="hexpand">True</property>
+            <property name="vexpand">True</property>
+            <property name="label" translatable="yes">Ticket 2: xx</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label4">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">start</property>
+            <property name="margin_left">10</property>
+            <property name="margin_right">10</property>
+            <property name="hexpand">True</property>
+            <property name="vexpand">True</property>
+            <property name="label" translatable="yes">Ticket 3: xx</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label5">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">start</property>
+            <property name="margin_left">10</property>
+            <property name="margin_right">10</property>
+            <property name="hexpand">True</property>
+            <property name="vexpand">True</property>
+            <property name="label" translatable="yes">Ticket 4: xx</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">4</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="button17">
+            <property name="label" translatable="yes">Done</property>
+            <property name="width_request">100</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="halign">center</property>
+            <property name="valign">center</property>
+            <property name="hexpand">True</property>
+            <property name="vexpand">True</property>
+            <signal name="clicked" handler="on_button17_clicked" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">5</property>
           </packing>
         </child>
       </object>

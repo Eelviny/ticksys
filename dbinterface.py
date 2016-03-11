@@ -83,3 +83,6 @@ def sampleDB():
 	dbrunning[0].write("ticket_types", ("Child", "10.50", "A slightly smaller human being."))
 	dbrunning[0].write("ticket_types", ("Student", "12.10", "A youthful human being."))
 	dbrunning[0].write("ticket_types", ("Senior", "18.46", "An old human being."))
+	dbrunning[0].write("user_info", ("Elvin", "Luff", "001E5CBC5"))
+	dbrunning[0].write("orders", ("3", "1", "1"))
+	dbrunning[0].write("orders", ("5", "1", "3"))
