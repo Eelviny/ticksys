@@ -11,7 +11,7 @@ def codeRead(database, ticketID):
 	if not sumRead(listID):
 		raise ValueError
 	# Return the database record containing the ticket code
-	return dbrunning[database].read("user_info", "code='{0}'".format(ticketID))
+	return dbrunning[database].read("user_info", "code='{0}'".format(ticketID.upper()))
 		
 # Take a human-readable code and turn it into an integer list for the checksum generator
 def codeConv(ticketID):

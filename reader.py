@@ -42,12 +42,12 @@ class Reader():
 		
 	# Whenever the text changes, call the updater
 	def textUpdate(self):
-		print("update")
+		print("update") # debug code
 		# The magic part of the program. Once the value is long enough, cue the info
 		if len(self.textGet()) >= 9:
 			try:
 				# fetch the user info for the relevant code using codereader
-				info = codereader.codeRead(database, self.textGet().upper())
+				info = codereader.codeRead(database, self.textGet())
 				print(info) # debug code
 				orders = dbinterface.dbrunning[database].read("orders", "userID={0}".format(info[0][0]))
 				print(orders) # debug code
@@ -59,7 +59,7 @@ class Reader():
 				self.builder.get_object("label1").set_text(str("Name: " + info[0][1] + " " + info[0][2]))
 				# The next 4 lines are for each of the 4 ticket types
 				for i in range(2,6):
-					# Use loops to find the correct order number in the nested list
+					# Use for loops to find the correct order number in the nested list
 					order = "0"
 					for a, b in enumerate(orders):
 						if b[3] == i:
@@ -79,7 +79,7 @@ class Reader():
 	def onDeleteWindow(self, *args):
 		Gtk.main_quit(*args)
 		
-	# Each button is linked to one definition
+	# Each button is linked to one function
 	def on_entry1_icon_press(self, *args):
 		self.textSet("")
 
@@ -135,8 +135,7 @@ class Reader():
 	# Detect changes to entry1, and trigger the text update
 	def on_entry1_changed(self, *args):
 		self.textUpdate()
-		
-		
+
 	# When the popup is finished with, don't destroy it - hide it away for the next use
 	# The close button on the popup is disabled, so the only way to get rid of it is to use button17
 	def on_button17_clicked(self, *args):
