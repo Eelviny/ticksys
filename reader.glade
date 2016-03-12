@@ -16,6 +16,7 @@
         <property name="margin_left">5</property>
         <property name="margin_right">5</property>
         <property name="margin_top">5</property>
+        <property name="margin_bottom">5</property>
         <property name="row_spacing">5</property>
         <property name="column_spacing">5</property>
         <child>
@@ -24,6 +25,7 @@
             <property name="can_focus">True</property>
             <property name="hexpand">True</property>
             <property name="vexpand">False</property>
+            <property name="max_width_chars">9</property>
             <property name="secondary_icon_stock">gtk-delete</property>
             <property name="placeholder_text" translatable="yes">Enter Ticket Code Here...</property>
             <signal name="changed" handler="on_entry1_changed" swapped="no"/>
@@ -269,6 +271,7 @@
     <property name="can_focus">False</property>
     <property name="destroy_with_parent">True</property>
     <property name="deletable">False</property>
+    <property name="gravity">center</property>
     <child>
       <object class="GtkBox" id="box1">
         <property name="visible">True</property>

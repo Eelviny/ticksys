@@ -53,8 +53,8 @@ class Reader():
 				print(orders) # debug code
 				# Extract the second window
 				self.popup = self.builder.get_object("window2")
-				# Set the title of the second window to the code inputted
-				self.popup.set_title(self.textGet())
+				# Set the title of the second window to the code inputted, capitalised
+				self.popup.set_title(self.textGet().upper())
 				# Pull the users first and last names from the database and put it on the first line
 				self.builder.get_object("label1").set_text(str("Name: " + info[0][1] + " " + info[0][2]))
 				# The next 4 lines are for each of the 4 ticket types
