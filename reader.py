@@ -58,7 +58,7 @@ class Reader():
 				# Pull the users first and last names from the database and put it on the first line
 				self.builder.get_object("label1").set_text(str("Name: " + info[0][1] + " " + info[0][2]))
 				# The next 4 lines are for each of the 4 ticket types
-				for i in range(2,6):
+				for i in range(1,5):
 					# Use for loops to find the correct order number in the nested list
 					order = "0"
 					for a, b in enumerate(orders):
@@ -66,7 +66,7 @@ class Reader():
 							order = str(b[1])
 					print(order) # debug code
 					# Take all the information found on the users tickets and place it into the labels
-					self.builder.get_object("label{0}".format(str(i))).set_text(str(self.tickets[i-2][1] + ": " + order))
+					self.builder.get_object("label{0}".format(str(i+1))).set_text(str(self.tickets[i-1][1] + ": " + order))
 				# Now we have the information in place, show the user the popup box
 				self.popup.show_all()
 				# Reset the code reader for the next use
