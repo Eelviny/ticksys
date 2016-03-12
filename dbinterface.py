@@ -63,12 +63,12 @@ class Database():
 		return dbid
 			
 	# Uses the write function to sort data into the correct tables, with the correct foreign keys
-	def newEntry(self, fName, lName, randomID, tickets):
+	def newEntry(self, fName, lName, code, tickets):
 		# The database takes all values of strings
 		for i in range(3):
 			tickets[i] = str(tickets[i])
 		# Find the database set ID while writing to the database
-		dbid = self.write("user_info", (fName, lName, randomID))
+		dbid = self.write("user_info", (fName, lName, code))
 		# Enumerate returns a list with first item: index, second item: value
 		for typ, quant in enumerate(tickets):
 			# Only write orders to the database if there are 1 or more tickets
