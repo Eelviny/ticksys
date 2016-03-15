@@ -3,6 +3,7 @@
 # Database Interface Module
 import sqlite3
 
+# Create a global variable to hold all the currently active databases
 global dbrunning
 dbrunning = []
 
@@ -86,6 +87,18 @@ class Database():
 		else:
 			# If there are IDs, add 1 to the value found and return it
 			return value + 1
+			
+	def verify(self):
+		# Read the database schema from the sqlite_master table
+		self.c.execute('SELECT * FROM sqlite_master')
+		# Sample the data by taking the first value to see if it matches
+		if self.c.fetchone() == ('table', 'ticket_types', 'ticket_types', 2, 'CREATE TABLE ticket_types (ID INTEGER PRIMARY KEY AUTOINCREMENT, tName TEXT, tPrice DECIMAL(10,2), tInfo TEXT)'):
+			return True
+		else:
+			# If not, the table must be broken or incorrect
+			return False
+		
+		
 		
 # Creates a new database with the correct tables
 def newDB(path, keepalive=True):
@@ -94,9 +107,12 @@ def newDB(path, keepalive=True):
 	newdb.execute('CREATE TABLE user_info (ID INTEGER PRIMARY KEY AUTOINCREMENT, fName TEXT, lName TEXT, code CHAR(10));')
 	newdb.execute('CREATE TABLE orders (ID INTEGER PRIMARY KEY AUTOINCREMENT, quantity INTEGER, userID INTEGER, ticketTypeID INTEGER);')
 	newdb.commit()
-	# If the database does not need to be opened right now, close it after creation
+	# If the database is not needed right now, close it after creation
 	if not keepalive:
 		newdb.close()
+	else:
+		# Give the dbrunning position
+		return dbrunning.index(newdb)
 
 # Purely for debugging and testing purposes. Create an already populated database for test usage
 def sampleDB():

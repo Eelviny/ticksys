@@ -7,6 +7,7 @@ import locale # Used for formatting strings to local currency
 locale.setlocale( locale.LC_ALL, 'en_GB.UTF-8' )
 import codegenerator
 import dbinterface
+import fileaccess
 
 # Start the reader program class
 class Creator():
@@ -97,13 +98,23 @@ class Creator():
 	def on_button4_clicked(self, *args):
 		self.addValue(3)
 	
-	def on_clear_clicked(self, *args):
+	def on_toolbutton1_clicked(self, *args):
 		self.clearTable()
 	
-	def on_open_clicked(self, *args):
-		print("Open") # TODO: Link to file access
+	def on_filechooserbutton1_file_set(self, item):
+		dialog = Gtk.FileChooserDialog("Please choose a file", item, Gtk.FileChooserAction.OPEN, (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, Gtk.STOCK_OPEN, Gtk.ResponseType.OK))
+
+        #self.add_filters(dialog)
+
+		response = dialog.run()
+		if response == Gtk.ResponseType.OK:
+			print("Open clicked")
+			print("File selected: " + dialog.get_filename())
+		elif response == Gtk.ResponseType.CANCEL:
+			print("Cancel clicked")
+		dialog.destroy()
 		
-	def on_save_clicked(self, *args):
+	def on_toolbutton2_clicked(self, *args):
 		# Fetch the names written into the text fields
 		fName = self.entry1.get_text()
 		lName = self.entry2.get_text()

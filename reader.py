@@ -31,7 +31,6 @@ class Reader():
 	# Sets the text in entry1
 	def textSet(self, text):
 		self.entry1.set_text(text)
-		
 
 	# Takes the existing text in entry1 and adds the character to it
 	def textAdd(self, text):
@@ -42,7 +41,7 @@ class Reader():
 		
 	# Whenever the text changes, call the updater
 	def textUpdate(self):
-		print("update") # debug code
+		print(self.textGet()) # debug code
 		# The magic part of the program. Once the value is long enough, cue the info
 		if len(self.textGet()) >= 9:
 			try:
@@ -72,8 +71,9 @@ class Reader():
 				# Reset the code reader for the next use
 				self.entry1.set_text("")
 			except ValueError:
-				# If the checksum fails, handle graceully and give a nice error message to the user
+				# If the checksum fails, handle gracefully and give a nice error message to the user
 				self.textSet("Error!")
+				self.entry1.grab_focus()
 		
 	# Close all windows on the deletion of the top-level window
 	def onDeleteWindow(self, *args):
@@ -94,7 +94,6 @@ class Reader():
 		
 	def on_button4_clicked(self, *args):
 		self.textAdd("3")
-		print(button)
 		
 	def on_button5_clicked(self, *args):
 		self.textAdd("4")
