@@ -101,18 +101,10 @@ class Creator():
 	def on_toolbutton1_clicked(self, *args):
 		self.clearTable()
 	
-	def on_filechooserbutton1_file_set(self, item):
-		dialog = Gtk.FileChooserDialog("Please choose a file", item, Gtk.FileChooserAction.OPEN, (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, Gtk.STOCK_OPEN, Gtk.ResponseType.OK))
-
-        #self.add_filters(dialog)
-
-		response = dialog.run()
-		if response == Gtk.ResponseType.OK:
-			print("Open clicked")
-			print("File selected: " + dialog.get_filename())
-		elif response == Gtk.ResponseType.CANCEL:
-			print("Cancel clicked")
-		dialog.destroy()
+	def on_filechooserbutton1_file_set(self, *args):
+		filechooserbutton1 = self.builder.get_object("filechooserbutton1")
+		fileaccess.setFile(filechooserbutton1.get_filename())
+		
 		
 	def on_toolbutton2_clicked(self, *args):
 		# Fetch the names written into the text fields
