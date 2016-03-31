@@ -76,7 +76,7 @@ class Reader():
 				self.entry1.grab_focus()
 		
 	# Close all windows on the deletion of the top-level window
-	def onDeleteWindow(self, *args):
+	def on_window1_delete_event(self, *args):
 		Gtk.main_quit(*args)
 		
 	# Each button is linked to one function

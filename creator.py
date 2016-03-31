@@ -48,7 +48,7 @@ class Creator():
 		# With all elements set, show the window
 		self.window.show_all()
 	
-	def onDeleteWindow(self, *args):
+	def on_window1_delete_event(self, *args):
 		# When the top-level window is closed, close everything
 		Gtk.main_quit(*args)
 	
