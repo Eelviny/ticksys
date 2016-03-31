@@ -43,11 +43,40 @@ class Editor():
 	def on_window1_delete_event(self, *args):
 		Gtk.main_quit(*args)
 		
-	def on_toolbutton1_clicked(self, item):
+	# New button
+	def on_toolbutton1_clicked(self, *args):
+		pass
+	
+	# Open button
+	def on_toolbutton2_clicked(self, *args):
 		try:
 			fileaccess.setFile(fileaccess.openDialog(self.window))
 		except (NameError, TypeError):
 			print("nope")
+
+	# Save button
+	def on_toolbutton4_clicked(self, *args):
+		pass
+
+	# Save As button
+	def on_toolbutton5_clicked(self, *args):
+		pass
+
+	# Ticket Remove button
+	def on_toolbutton6_clicked(self, *args):
+		pass
+
+	# Ticket Add button
+	def on_toolbutton7_clicked(self, *args):
+		pass
+
+	# Order Remove button	
+	def on_toolbutton8_clicked(self, *args):
+		pass
+
+	# Order Add button
+	def on_toolbutton9_clicked(self, *args):
+		pass
 
 # For testing - Use the sample database	
 dbinterface.sampleDB()
