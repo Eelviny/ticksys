@@ -3,8 +3,6 @@
 # Database Interface Module
 import sqlite3
 
-# Create a global variable to hold all the currently active databases
-
 # File access will initialise the class
 class Database():
 	def __init__(self, path=":memory:"):
@@ -97,8 +95,6 @@ class Database():
 		else:
 			# If not, the table must be broken or incorrect
 			return False
-		
-		
 		
 # Creates a new database with the correct tables
 def newDB(path, keepalive=True):
