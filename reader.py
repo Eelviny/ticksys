@@ -5,6 +5,7 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 import codereader
 import dbinterface
+import fileaccess
 
 # Start the reader program class
 class Reader():
@@ -20,8 +21,11 @@ class Reader():
 		self.entry1 = self.builder.get_object("entry1")
 		# Once everything is fetched, show the windows
 		self.window.show_all()
+		self.db = fileaccess.openDialog(self.window)
+		if self.db == None:
+			raise SystemExit(0)
 		# To prevent multiple database reads, store the whole table in memory at the start
-		self.tickets = dbinterface.dbrunning[database].read("ticket_types")
+		self.tickets = self.db.read("ticket_types")
 		print(self.tickets) # debug code
 
 	# Fetches the text from entry1
@@ -46,9 +50,9 @@ class Reader():
 		if len(self.textGet()) >= 9:
 			try:
 				# fetch the user info for the relevant code using codereader
-				info = codereader.codeRead(database, self.textGet())
+				info = codereader.codeRead(self.db, self.textGet())
 				print(info) # debug code
-				orders = dbinterface.dbrunning[database].read("orders", "userID={0}".format(info[0][0]))
+				orders = self.db.read("orders", "userID={0}".format(info[0][0]))
 				print(orders) # debug code
 				# Extract the second window
 				self.popup = self.builder.get_object("window2")
@@ -77,7 +81,7 @@ class Reader():
 		
 	# Close all windows on the deletion of the top-level window
 	def on_window1_delete_event(self, *args):
-		Gtk.main_quit(*args)
+		raise SystemExit(0)
 		
 	# Each button is linked to one function
 	def on_entry1_icon_press(self, *args):
@@ -139,10 +143,9 @@ class Reader():
 	# The close button on the popup is disabled, so the only way to get rid of it is to use button17
 	def on_button17_clicked(self, *args):
 		self.popup.hide()
-
-# For testing - Use the sample database	
-dbinterface.sampleDB()
-database = 0
+	
+	def on_filechooserbutton1_file_set(self, *args):
+		pass
 
 # Create the main event loop
 main = Reader()

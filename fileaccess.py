@@ -12,38 +12,57 @@ def setFile(path):
 	if path[-3:] != '.db':
 		raise TypeError
 	# Try opening the database. Remember to catch exceptions
-	opendb = Database(path)
+	db = Database(path)
 	# Verify that the database is for this program
-	if opendb.verify() == False:
+	if db.verify() == False:
+		# If not, remember to close the database without saving anything to it
+		db.close(False)
 		raise TypeError
-	# Only create a new entry if it's not there - no duplicates
-	if opendb not in dbrunning:
-		dbrunning.append(opendb)
-	# Return the value of position in the list
-	return dbrunning.index(opendb)
+	# Return the new database object
+	return db
 	
 def newFile(path):
 	# Make sure the new file has the correct ending
 	if path[-3:] != ".db":
 		path += ".db"
 	return newDB(filestring)
-	
+
+# Create a dialog box for selecting the sqlite file
 def openDialog(parent=None):
+	# Create the dialog object
+	dialog = Gtk.FileChooserDialog("Please choose a file", parent, Gtk.FileChooserAction.OPEN, (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, Gtk.STOCK_OPEN, Gtk.ResponseType.OK))
+	# Run the dialog object, catching responses
+	response = dialog.run()
+	# Process the response
+	if response == Gtk.ResponseType.OK:
+		print("File selected: " + dialog.get_filename()) # debug code
+		# If the file is not correct, an error will occur, so catch it
+		try:
+			# Pass to setFile to validate and open the database
+			response = setFile(dialog.get_filename())
+		# If it is an error, send None
+		except (TypeError, NameError):
+			response = None
+			print("This is an invalid file!") # debug code
+	# If cancel is pressed, send None
+	elif response == Gtk.ResponseType.CANCEL:
+		print("Cancel clicked") # debug code
+		response = None
+	# Remember to get rid of the dialog box
+	dialog.destroy()
+	# Return the database object
+	return response
+
+def newDialog(parent=None):
 	dialog = Gtk.FileChooserDialog("Please choose a file", parent, Gtk.FileChooserAction.OPEN, (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, Gtk.STOCK_OPEN, Gtk.ResponseType.OK))
 	response = dialog.run()
 	if response == Gtk.ResponseType.OK:
-		print("Open clicked")
 		print("File selected: " + dialog.get_filename())
-	elif response == Gtk.ResponseType.CANCEL:
-		print("Cancel clicked")
-	dialog.destroy()
-
-def saveDialog(parent=None):
-	dialog = Gtk.FileChooserDialog("Please choose a location", parent, Gtk.FileChooserAction.OPEN, (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, Gtk.STOCK_SAVE, Gtk.ResponseType.OK))
-	response = dialog.run()
-	if response == Gtk.ResponseType.OK:
-		print("File selected: " + dialog.get_filename())
-		response = dialog.get_filename()
+		try:
+			response = setFile(dialog.get_filename())
+		except (TypeError, NameError):
+			response = None
+			print("This is an invalid file!")
 	elif response == Gtk.ResponseType.CANCEL:
 		print("Cancel clicked")
 		response = None

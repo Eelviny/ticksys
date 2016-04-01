@@ -14,6 +14,7 @@ class Editor():
 		self.builder = Gtk.Builder()
 		self.builder.add_from_file("editor.glade")
 		self.builder.connect_signals(self)
+		self.db = None
 		# Create the treeview list
 		#self.liststore1 = Gtk.ListStore(str, str)
 		# Find items that need to be dynamic
@@ -41,7 +42,7 @@ class Editor():
 		
 	# Close all windows on the deletion of the top-level window
 	def on_window1_delete_event(self, *args):
-		Gtk.main_quit(*args)
+		raise SystemExit(0)
 		
 	# New button
 	def on_toolbutton1_clicked(self, *args):
@@ -49,10 +50,7 @@ class Editor():
 	
 	# Open button
 	def on_toolbutton2_clicked(self, *args):
-		try:
-			fileaccess.setFile(fileaccess.openDialog(self.window))
-		except (NameError, TypeError):
-			print("nope")
+		self.db = fileaccess.openDialog(self.window)
 
 	# Save button
 	def on_toolbutton4_clicked(self, *args):

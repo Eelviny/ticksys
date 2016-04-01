@@ -42,5 +42,5 @@ def codePrint(code):
 	
 def newCode(db):
 	# Find the next available database ID and generate a code from it
-	dbid = dbrunning[db].nextAvail("user_info")
+	dbid = db.nextAvail("user_info")
 	return codeGen(dbid)

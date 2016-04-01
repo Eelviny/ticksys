@@ -31,9 +31,13 @@ class Creator():
 			self.treeview.append_column(column)
 		# Attach model to treeview
 		self.treeview.set_model(self.liststore1)
-		
+		# With all elements set, show the window
+		self.window.show_all()
+		self.db = fileaccess.openDialog(self.window)
+		if self.db == None:
+			raise SystemExit(0)
 		# Translate the database ticket types into a GUI list
-		self.dbticket = dbinterface.dbrunning[database].read("ticket_types")
+		self.dbticket = self.db.read("ticket_types")
 		self.tickets = []
 		# For every ticket type, label a button for it
 		for i in range(4):
@@ -45,12 +49,11 @@ class Creator():
 		print(self.tickets) # debug code
 		# Reset the table for first use
 		self.clearTable()
-		# With all elements set, show the window
-		self.window.show_all()
-	
+		
 	def on_window1_delete_event(self, *args):
+		self.db.close()
 		# When the top-level window is closed, close everything
-		Gtk.main_quit(*args)
+		raise SystemExit(0)
 	
 	def addValue(self, value):
 		# Add the ticket to the list view
@@ -70,7 +73,7 @@ class Creator():
 		self.entry1.set_text("")
 		self.entry2.set_text("")
 		# Create a new code for a new ticket
-		self.code = codegenerator.codePrint(codegenerator.newCode(database))
+		self.code = codegenerator.codePrint(codegenerator.newCode(self.db))
 		self.builder.get_object("label2").set_text(str("Code: "+self.code))
 		# Set the price to 0 by updating it to the empty list
 		self.updatePrice()
@@ -113,20 +116,16 @@ class Creator():
 		# Do not allow saving if fields are empty or read "Incomplete"
 		if self.ticketlist != [0,0,0,0] and fName != "" and fName != "Incomplete" and lName != "" and lName != "Incomplete":
 			# use the newEntry function to place all the info in the correct tables
-			dbinterface.dbrunning[database].newEntry(fName, lName, self.code, self.ticketlist)
+			self.db.newEntry(fName, lName, self.code, self.ticketlist)
 			# Once saved, clear the table for the next user
 			self.clearTable()
-			print(dbinterface.dbrunning[database].read("user_info")) # debug code
-			print(dbinterface.dbrunning[database].read("orders")) # debug code
+			print(self.db.read("user_info")) # debug code
+			print(self.db.read("orders")) # debug code
 		# Alert the user to an incomplete section by setting "Incomplete" in it
 		if fName == "":
 			self.entry1.set_text("Incomplete")
 		if lName == "":
 			self.entry2.set_text("Incomplete")
-		
-# TODO: Create a file browser so it doesn't use the test database
-dbinterface.sampleDB() # testing code
-database = 0
 
 # Assign the class and start the event loop
 main = Creator() 

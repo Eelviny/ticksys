@@ -4,16 +4,14 @@
 import sqlite3
 
 # Create a global variable to hold all the currently active databases
-global dbrunning
-dbrunning = []
 
 # File access will initialise the class
 class Database():
-	def __init__(self, dbname):
-		# Add to dbrunning list so it can always be refenced
-		dbrunning.append(self)
+	def __init__(self, path=":memory:"):
+		if path == ":memory:":
+			print("WARNING: Database is in memory! Nothing will be saved")
 		# Connect to database
-		self.conn = sqlite3.connect(dbname)
+		self.conn = sqlite3.connect(path)
 		self.c = self.conn.cursor()
 		
 	# By default, don't save to the database immediately
@@ -34,7 +32,7 @@ class Database():
 		# Close the database connection
 		self.conn.close()
 		# Don't delete from dbrunning, or the values will shift - just set to None
-		dbrunning[dbrunning.index(self)] = None
+		# dbrunning[dbrunning.index(self)] = None
 		# Finally delete itself from memory to free up space
 		del self
 		
@@ -75,6 +73,8 @@ class Database():
 			# Only write orders to the database if there are 1 or more tickets
 			if int(quant) > 0:
 				self.write("orders", (quant, dbid, typ))
+		self.commit()
+		print("Entry Saved") # debug code
 			
 	# Find the next free ID
 	def nextAvail(self, table):
@@ -102,25 +102,26 @@ class Database():
 		
 # Creates a new database with the correct tables
 def newDB(path, keepalive=True):
-	newdb = Database(path)
-	newdb.execute('CREATE TABLE ticket_types (ID INTEGER PRIMARY KEY AUTOINCREMENT, tName TEXT, tPrice DECIMAL(10,2), tInfo TEXT);')
-	newdb.execute('CREATE TABLE user_info (ID INTEGER PRIMARY KEY AUTOINCREMENT, fName TEXT, lName TEXT, code CHAR(10));')
-	newdb.execute('CREATE TABLE orders (ID INTEGER PRIMARY KEY AUTOINCREMENT, quantity INTEGER, userID INTEGER, ticketTypeID INTEGER);')
-	newdb.commit()
+	db = Database(path)
+	db.execute('CREATE TABLE ticket_types (ID INTEGER PRIMARY KEY AUTOINCREMENT, tName TEXT, tPrice DECIMAL(10,2), tInfo TEXT);')
+	db.execute('CREATE TABLE user_info (ID INTEGER PRIMARY KEY AUTOINCREMENT, fName TEXT, lName TEXT, code CHAR(10));')
+	db.execute('CREATE TABLE orders (ID INTEGER PRIMARY KEY AUTOINCREMENT, quantity INTEGER, userID INTEGER, ticketTypeID INTEGER);')
+	db.commit()
 	# If the database is not needed right now, close it after creation
 	if not keepalive:
-		newdb.close()
+		db.close()
 	else:
-		# Give the dbrunning position
-		return dbrunning.index(newdb)
+		# Give the database object
+		return db
 
 # Purely for debugging and testing purposes. Create an already populated database for test usage
-def sampleDB():
-	newDB(":memory:")
-	dbrunning[0].write("ticket_types", ("Adult", "20.08", "A fully grown human being."))
-	dbrunning[0].write("ticket_types", ("Child", "10.50", "A slightly smaller human being."))
-	dbrunning[0].write("ticket_types", ("Student", "12.10", "A youthful human being."))
-	dbrunning[0].write("ticket_types", ("Senior", "18.46", "An old human being."))
-	dbrunning[0].write("user_info", ("Elvin", "Luff", "001E5CBC5"))
-	dbrunning[0].write("orders", ("3", "1", "1"))
-	dbrunning[0].write("orders", ("5", "1", "3"))
+def sampleDB(path=":memory:"):
+	db = newDB(path)
+	db.write("ticket_types", ("Adult", "20.08", "A fully grown human being."))
+	db.write("ticket_types", ("Child", "10.50", "A slightly smaller human being."))
+	db.write("ticket_types", ("Student", "12.10", "A youthful human being."))
+	db.write("ticket_types", ("Senior", "18.46", "An old human being."))
+	db.write("user_info", ("Elvin", "Luff", "001E5CBC5"))
+	db.write("orders", ("3", "1", "1"))
+	db.write("orders", ("5", "1", "3"))
+	return db
