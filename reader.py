@@ -65,7 +65,7 @@ class Reader():
 					# Use for loops to find the correct order number in the nested list
 					order = "0"
 					for a, b in enumerate(orders):
-						if b[3] == i:
+						if b[3] == i-1:
 							order = str(b[1])
 					print(order) # debug code
 					# Take all the information found on the users tickets and place it into the labels
