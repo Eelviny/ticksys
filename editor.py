@@ -59,12 +59,14 @@ class Editor():
 			
 	# Take the information from ticket_types and display everything
 	def updateTickets(self):
+		self.liststore1.clear()
 		# For each line in the table, display all columns except the ID column
 		for a,b in enumerate(self.db.read("ticket_types")):
 			self.liststore1.append([str(b[1]), str(b[2]), str(b[3])])
 			
 	# We need to present each order in a way that the user can read, bringing the data in from all tables.
 	def updateOrders(self):
+		self.liststore2.clear()
 		# We need a row for every user
 		for a, user in enumerate(self.db.read("user_info")):
 			# Take the ticket code and use for the first row
@@ -91,7 +93,7 @@ class Editor():
 		
 	# New button
 	def on_toolbutton1_clicked(self, *args):
-		self.db = fileaccess.saveDialog(self.window, True)
+		self.db = fileaccess.saveDialog(self.window)
 	
 	# Open button
 	def on_toolbutton2_clicked(self, *args):

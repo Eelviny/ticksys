@@ -6,8 +6,10 @@
     <property name="width_request">800</property>
     <property name="height_request">600</property>
     <property name="can_focus">False</property>
+    <property name="title" translatable="yes">Ticket Editor</property>
     <property name="default_width">800</property>
     <property name="default_height">600</property>
+    <property name="icon_name">accessories-text-editor</property>
     <signal name="delete-event" handler="on_window1_delete_event" swapped="no"/>
     <child>
       <object class="GtkBox" id="box1">
@@ -97,7 +99,7 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="vexpand">True</property>
-            <property name="position">200</property>
+            <property name="position">300</property>
             <property name="wide_handle">True</property>
             <child>
               <object class="GtkBox" id="box2">
