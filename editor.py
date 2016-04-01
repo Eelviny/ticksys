@@ -16,29 +16,59 @@ class Editor():
 		self.builder.connect_signals(self)
 		self.db = None
 		# Create the treeview list
-		#self.liststore1 = Gtk.ListStore(str, str)
+		self.liststore1 = Gtk.ListStore(str, str, str)
 		# Find items that need to be dynamic
 		self.window = self.builder.get_object("window1")
-		#self.entry1 = self.builder.get_object("entry1")
-		#self.entry2 = self.builder.get_object("entry2")
 		# Find the treeview object and attach a cell renderer to it
-		#self.treeview = self.builder.get_object("treeview1")
+		self.treeview1 = self.builder.get_object("treeview1")
 		# For every item in the list, create a column for it
-		#for i, column_title in enumerate(["Ticket Type", "Price"]):
-		#	renderer = Gtk.CellRendererText()
-		#	column = Gtk.TreeViewColumn(column_title, renderer, text=i)
-		#	self.treeview.append_column(column)
+		for i, column_title in enumerate(["Ticket Type", "Price", "Information"]):
+			renderer = Gtk.CellRendererText()
+			column = Gtk.TreeViewColumn(column_title, renderer, text=i)
+			self.treeview1.append_column(column)
 		# Attach model to treeview
-		#self.treeview.set_model(self.liststore1)
+		self.treeview1.set_model(self.liststore1)
 		
-		# Translate the database ticket types into a GUI list
-		#self.dbticket = dbinterface.dbrunning[database].read("ticket_types")
-		#self.tickets = []
-		#print(self.tickets) # debug code
-		# Reset the table for first use
-		#self.clearTable()
-		# With all elements set, show the window
+		self.liststore2 = Gtk.ListStore(str, str, str)
+		# Find the treeview object and attach a cell renderer to it
+		self.treeview2 = self.builder.get_object("treeview2")
+		# For every item in the list, create a column for it
+		for i, column_title in enumerate(["Ticket Code", "Name", "Orders"]):
+			renderer = Gtk.CellRendererText()
+			column = Gtk.TreeViewColumn(column_title, renderer, text=i)
+			self.treeview2.append_column(column)
+		# Attach model to treeview
+		self.treeview2.set_model(self.liststore2)
+		
 		self.window.show_all()
+		
+	def newdbfile(self):
+		newdb = fileaccess.openDialog(self.window)
+		if newdb != None:
+			print("New File") # debug code
+			try:
+				self.db.close()
+			except:
+				pass
+			self.db = newdb
+			self.updateTickets()
+			self.updateOrders()
+			
+	def updateTickets(self):
+		for a,b in enumerate(self.db.read("ticket_types")):
+			self.liststore1.append([str(b[1]), str(b[2]), str(b[3])])
+			
+	def updateOrders(self):
+		for a, user in enumerate(self.db.read("user_info")):
+			code = user[3]
+			name = str(user[1] + " " + user[2])
+			tickets = ""
+			for b, order in enumerate(self.db.read("orders", "userID={0}".format(user[0]))):
+				ticketname = self.db.read("ticket_types", "ID={0}".format(order[3]+1))[0][1]
+				tickets += str(str(order[1]) + " " + ticketname + ", ")
+			tickets = tickets[:-2]
+			self.liststore2.append([code, name, tickets])
+			
 		
 	# Close all windows on the deletion of the top-level window
 	def on_window1_delete_event(self, *args):
@@ -46,19 +76,20 @@ class Editor():
 		
 	# New button
 	def on_toolbutton1_clicked(self, *args):
-		pass
+		self.db = fileaccess.saveDialog(self.window, True)
 	
 	# Open button
 	def on_toolbutton2_clicked(self, *args):
-		self.db = fileaccess.openDialog(self.window)
+		self.newdbfile()
 
 	# Save button
 	def on_toolbutton4_clicked(self, *args):
-		pass
+		self.db.commit()
 
 	# Save As button
 	def on_toolbutton5_clicked(self, *args):
-		pass
+		self.db.commit()
+		self.db = fileaccess.saveDialog(self.window)
 
 	# Ticket Remove button
 	def on_toolbutton6_clicked(self, *args):
@@ -75,10 +106,6 @@ class Editor():
 	# Order Add button
 	def on_toolbutton9_clicked(self, *args):
 		pass
-
-# For testing - Use the sample database	
-dbinterface.sampleDB()
-database = 0
 
 # Create the main event loop
 main = Editor()
