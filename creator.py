@@ -33,27 +33,33 @@ class Creator():
 		self.treeview.set_model(self.liststore1)
 		# With all elements set, show the window
 		self.window.show_all()
-		self.db = fileaccess.openDialog(self.window)
-		if self.db == None:
+		if self.newdbfile() == False:
 			raise SystemExit(0)
-		# Translate the database ticket types into a GUI list
-		self.dbticket = self.db.read("ticket_types")
-		self.tickets = []
-		# For every ticket type, label a button for it
-		for i in range(4):
-			self.tickets.append([self.dbticket[i][1], str(locale.currency(self.dbticket[i][2]))])
-			button = self.builder.get_object("button{0}".format(str(i+1)))
-			button.set_label(self.dbticket[i][1])
-			# Set a tooltip description that can be set by the user
-			button.set_tooltip_text(self.dbticket[i][3])
 		print(self.tickets) # debug code
-		# Reset the table for first use
-		self.clearTable()
 		
-	def on_window1_delete_event(self, *args):
-		self.db.close()
-		# When the top-level window is closed, close everything
-		raise SystemExit(0)
+	def newdbfile(self):
+		newdb = fileaccess.openDialog(self.window)
+		if newdb != None:
+			print("New File") # debug code
+			try:
+				self.db.close()
+			except:
+				pass
+			self.db = newdb
+			# Translate the database ticket types into a GUI list
+			self.dbticket = self.db.read("ticket_types")
+			self.tickets = []
+			# For every ticket type, label a button for it
+			for i in range(4):
+				self.tickets.append([self.dbticket[i][1], str(locale.currency(self.dbticket[i][2]))])
+				button = self.builder.get_object("button{0}".format(str(i+1)))
+				button.set_label(self.dbticket[i][1])
+				# Set a tooltip description that can be set by the user
+				button.set_tooltip_text(self.dbticket[i][3])
+			self.clearTable()
+			return True
+		else:
+			return False
 	
 	def addValue(self, value):
 		# Add the ticket to the list view
@@ -88,7 +94,12 @@ class Creator():
 		self.builder.get_object("label1").set_text(str(locale.currency(price)))
 		
 	# Link buttons and objects to events
-	
+
+	def on_window1_delete_event(self, *args):
+		self.db.close()
+		# When the top-level window is closed, close everything
+		raise SystemExit(0)
+
 	def on_button1_clicked(self, *args):
 		self.addValue(0)
 		
@@ -104,11 +115,9 @@ class Creator():
 	def on_toolbutton1_clicked(self, *args):
 		self.clearTable()
 	
-	def on_filechooserbutton1_file_set(self, *args):
-		filechooserbutton1 = self.builder.get_object("filechooserbutton1")
-		fileaccess.setFile(filechooserbutton1.get_filename())
-		
-		
+	def on_button5_clicked(self, *args):
+		self.newdbfile()
+
 	def on_toolbutton2_clicked(self, *args):
 		# Fetch the names written into the text fields
 		fName = self.entry1.get_text()
