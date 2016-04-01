@@ -61,7 +61,7 @@ def saveDialog(parent=None, db=None):
 	response = dialog.run()
 	# Process the response
 	if response == Gtk.ResponseType.OK:
-		print("File selected: " + dialog.get_filename()) # debug code
+		print("File selected: " + dialog.get_filename() + "(.db)") # debug code
 		# If the file is not correct, an error will occur, so catch it
 		try:
 			if db == None:
@@ -70,7 +70,7 @@ def saveDialog(parent=None, db=None):
 				db.commit()
 				# TODO: work out how I'm going to get save as working
 		# If it is an error, send None
-		except (TypeError, NameError):
+		except (TypeError, NameError, sqlite3.OperationalError):
 			response = None
 			print("This is an invalid file!") # debug code
 	# If cancel is pressed, send None
