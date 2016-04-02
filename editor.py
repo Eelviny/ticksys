@@ -3,6 +3,8 @@
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
+import locale # Used for formatting strings to local currency
+locale.setlocale( locale.LC_ALL, 'en_GB.UTF-8' )
 import codereader
 import dbinterface
 import fileaccess
@@ -10,6 +12,7 @@ import fileaccess
 # Start the reader program class
 class Editor():
 	def __init__(self):
+		self.firstrun = True
 		# Use the Gtk Builder to read the interface file
 		self.builder = Gtk.Builder()
 		self.builder.add_from_file("editor.glade")
@@ -38,7 +41,9 @@ class Editor():
 			self.treeview2.append_column(column)
 		# Attach model to treeview
 		self.treeview2.set_model(self.liststore2)
-		
+		self.status = self.builder.get_object("statusbar1")
+		self.status.push(self.status.get_context_id(""), "Welcome to the Ticket Editor! Open or create a database to continue.")
+
 		self.window.show_all()
 		
 	def newdbfile(self):
@@ -56,13 +61,24 @@ class Editor():
 			# Update both tables with the new database information
 			self.updateTickets()
 			self.updateOrders()
+			if self.firstrun == True:
+				# Active all buttons once a database is opened
+				self.builder.get_object("toolbutton4").set_sensitive(True)
+				self.builder.get_object("toolbutton5").set_sensitive(True)
+				self.builder.get_object("toolbutton6").set_sensitive(True)
+				self.builder.get_object("toolbutton8").set_sensitive(True)
+				self.builder.get_object("toolbutton9").set_sensitive(True)
+				self.firstrun = False
+			self.status.push(self.status.get_context_id(""), "Database opened successfully!")
+		else:
+			self.status.push(self.status.get_context_id(""), "The file you've selected is invalid. Please try another.")
 			
 	# Take the information from ticket_types and display everything
 	def updateTickets(self):
 		self.liststore1.clear()
 		# For each line in the table, display all columns except the ID column
 		for a,b in enumerate(self.db.read("ticket_types")):
-			self.liststore1.append([str(b[1]), str(b[2]), str(b[3])])
+			self.liststore1.append([str(b[1]), str(locale.currency(b[2])), str(b[3])])
 			
 	# We need to present each order in a way that the user can read, bringing the data in from all tables.
 	def updateOrders(self):
@@ -94,6 +110,8 @@ class Editor():
 	# New button
 	def on_toolbutton1_clicked(self, *args):
 		self.db = fileaccess.saveDialog(self.window)
+		self.updateOrders()
+		self.updateTickets()
 	
 	# Open button
 	def on_toolbutton2_clicked(self, *args):
@@ -108,12 +126,8 @@ class Editor():
 		self.db.commit()
 		self.db = fileaccess.saveDialog(self.window)
 
-	# Ticket Remove button
+	# Ticket Edit button
 	def on_toolbutton6_clicked(self, *args):
-		pass
-
-	# Ticket Add button
-	def on_toolbutton7_clicked(self, *args):
 		pass
 
 	# Order Remove button	

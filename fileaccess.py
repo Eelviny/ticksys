@@ -54,7 +54,7 @@ def openDialog(parent=None):
 	# Return the database object
 	return response
 
-def saveDialog(parent=None, db=None):
+def saveAsDialog(db, parent=None):
 	# Create the dialog object
 	dialog = Gtk.FileChooserDialog("Save Database As...", parent, Gtk.FileChooserAction.SAVE, (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, Gtk.STOCK_SAVE, Gtk.ResponseType.OK))
 	# Run the dialog object, catching responses
@@ -63,16 +63,18 @@ def saveDialog(parent=None, db=None):
 	if response == Gtk.ResponseType.OK:
 		print("File selected: " + dialog.get_filename() + "(.db)") # debug code
 		# If the file is not correct, an error will occur, so catch it
-		try:
-			if db == None:
-				response = newDB(newFile(dialog.get_filename()))
-			else:
-				db.commit()
-				# TODO: work out how I'm going to get save as working
+		# Create a custom, 
+		newdb = newDB(newFile(dialog.get_filename()))
+		for i, ticket in enumerate(db.read("ticket_types")):
+			newdb.write("ticket_types", ticket[1:4])
+		for i, user in enumerate(db.read("user_info")):
+			newdb.write("user_info", user[1:4])
+		for i, order in enumerate(db.read("orders")):
+			newdb.write("orders", order[1:4])
 		# If it is an error, send None
-		except (TypeError, NameError, sqlite3.OperationalError):
-			response = None
-			print("This is an invalid file!") # debug code
+		#except (TypeError, NameError, sqlite3.OperationalError):
+		#	response = None
+		#	print("This is an invalid file!") # debug code
 	# If cancel is pressed, send None
 	elif response == Gtk.ResponseType.CANCEL:
 		print("Cancel clicked") # debug code
@@ -81,3 +83,7 @@ def saveDialog(parent=None, db=None):
 	dialog.destroy()
 	# Return the database object
 	return response
+	
+def newDialog(parent=None):
+	for i in range(4):
+		print(db.write('ticket_types', ('Undefined', '0.0', 'Undefined')))
