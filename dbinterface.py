@@ -58,7 +58,14 @@ class Database():
 			self.c.execute('INSERT INTO orders (quantity, userID, ticketTypeID) VALUES {0}'.format(values))
 		# If a function needs the ID of the item created, it can catch this value
 		return dbid
-			
+		
+	def update(self, table, column, dbid, value):
+		try:
+			self.c.execute('UPDATE {0} SET {1} = {2} WHERE ID = {3}'.format(table, column, value, dbid))
+			return True
+		except:
+			return False
+
 	# Uses the write function to sort data into the correct tables, with the correct foreign keys
 	def newEntry(self, fName, lName, code, tickets):
 		# The database takes all values of strings
