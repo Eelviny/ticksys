@@ -18,33 +18,36 @@ class Editor():
 		self.builder.add_from_file("editor.glade")
 		self.builder.connect_signals(self)
 		# Create the treeview list
-		self.liststore1 = Gtk.ListStore(str, str, str)
+		self.liststore1 = Gtk.ListStore(int, str, str, str)
 		# Find items that need to be dynamic
 		self.window = self.builder.get_object("window1")
 		# Find the treeview object and attach a cell renderer to it
-		self.treeview1 = self.builder.get_object("treeview1")
+		treeview1 = self.builder.get_object("treeview1")
 		# For every item in the list, create a column for it
-		for i, column_title in enumerate(["Ticket Type", "Price", "Information"]):
+		for i, column_title in enumerate(["#", "Ticket Type", "Price", "Information"]):
 			renderer = Gtk.CellRendererText()
 			column = Gtk.TreeViewColumn(column_title, renderer, text=i)
-			self.treeview1.append_column(column)
+			treeview1.append_column(column)
 		# Attach model to treeview
-		self.treeview1.set_model(self.liststore1)
+		treeview1.set_model(self.liststore1)
 		
 		self.liststore2 = Gtk.ListStore(str, str, str)
 		# Find the treeview object and attach a cell renderer to it
-		self.treeview2 = self.builder.get_object("treeview2")
+		treeview2 = self.builder.get_object("treeview2")
 		# For every item in the list, create a column for it
 		for i, column_title in enumerate(["Ticket Code", "Name", "Orders"]):
 			renderer = Gtk.CellRendererText()
 			column = Gtk.TreeViewColumn(column_title, renderer, text=i)
-			self.treeview2.append_column(column)
+			treeview2.append_column(column)
 		# Attach model to treeview
-		self.treeview2.set_model(self.liststore2)
-		self.status = self.builder.get_object("statusbar1")
-		self.status.push(self.status.get_context_id(""), "Welcome to the Ticket Editor! Open or create a database to continue.")
+		treeview2.set_model(self.liststore2)
+		self.statusPush("Welcome to the Ticket Editor! Open or create a database to continue.")
 
 		self.window.show_all()
+	
+	def statusPush(self, message):
+		status = self.builder.get_object("statusbar1")
+		status.push(status.get_context_id(""), message)
 		
 	def newdbfile(self):
 		# Use the Open dialog to get a database path
@@ -69,16 +72,16 @@ class Editor():
 				self.builder.get_object("toolbutton8").set_sensitive(True)
 				self.builder.get_object("toolbutton9").set_sensitive(True)
 				self.firstrun = False
-			self.status.push(self.status.get_context_id(""), "Database opened successfully!")
+			self.statusPush("Database opened successfully!")
 		else:
-			self.status.push(self.status.get_context_id(""), "The file you've selected is invalid. Please try another.")
+			self.statusPush("The file you've selected is invalid. Please try another.")
 			
 	# Take the information from ticket_types and display everything
 	def updateTickets(self):
 		self.liststore1.clear()
 		# For each line in the table, display all columns except the ID column
 		for a,b in enumerate(self.db.read("ticket_types")):
-			self.liststore1.append([str(b[1]), str(locale.currency(b[2])), str(b[3])])
+			self.liststore1.append([int(b[0]), str(b[1]), str(locale.currency(b[2])), str(b[3])])
 			
 	# We need to present each order in a way that the user can read, bringing the data in from all tables.
 	def updateOrders(self):
@@ -120,6 +123,7 @@ class Editor():
 	# Save button
 	def on_toolbutton4_clicked(self, *args):
 		self.db.commit()
+		self.statusPush("Database saved successfully.")
 
 	# Save As button
 	def on_toolbutton5_clicked(self, *args):
@@ -149,12 +153,18 @@ class Editor():
 	def on_treeview2_row_activated(self, *args):
 		print("rowactivate2", *args)
 
-	def on_treeview1_cursor_changed(self, treeview):
-		print("cursorchange1", treeview.get_cursor())
+	# When a new row is selected, update the value selected
+	def on_treeview1_cursor_changed(self, *args):
+		if self.firstrun is not True:
+			model, liststore = self.builder.get_object("treeview-selection1").get_selected()
+			self.ticket = int(model[liststore][0])
+			print(self.ticket)
 	
 	def on_treeview2_cursor_changed(self, *args):
-		print("cursorchange2", *args)
-		
+		if self.firstrun is not True:
+			model, liststore = self.builder.get_object("treeview-selection2").get_selected()
+			self.order = str(model[liststore][0])
+			print(self.order)
 
 # Create the main event loop
 main = Editor()
