@@ -136,7 +136,25 @@ class Editor():
 
 	# Order Add button
 	def on_toolbutton9_clicked(self, *args):
-		pass
+		self.prompt = self.builder.get_object("window2")
+		for i in range(1,5):
+			self.builder.get_object("label{0}".format(i)).set_text(self.db.read("ticket_types", "ID={0}".format(i))[0][1] + " Ticket")
+		#self.builder.get_object("label1").set_text(self.db.read("ticket_types", "ID=1")[1])
+		print(self.db.read("ticket_types", "ID=1")[0][1])
+		self.prompt.show_all()
+	
+	def on_treeview1_row_activated(self, *args):
+		print("rowactivate1", *args)
+		
+	def on_treeview2_row_activated(self, *args):
+		print("rowactivate2", *args)
+
+	def on_treeview1_cursor_changed(self, treeview):
+		print("cursorchange1", treeview.get_cursor())
+	
+	def on_treeview2_cursor_changed(self, *args):
+		print("cursorchange2", *args)
+		
 
 # Create the main event loop
 main = Editor()
