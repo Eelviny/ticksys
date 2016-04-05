@@ -104,6 +104,31 @@ class Editor():
 			tickets = tickets[:-2]
 			# Finally, take the row and append it to the table
 			self.liststore2.append([code, name, tickets])
+
+	def orderPopup(self, code=None):
+		popup = self.builder.get_object("window2")
+		for i in range(1,5):
+			self.builder.get_object("label{0}".format(i)).set_text(self.db.read("ticket_types", "ID={0}".format(i))[0][1] + " Ticket")
+		if code == None:
+			for i in range(1,3):
+				self.builder.get_object("entry{0}".format(i)).set_text("")
+				print("entry"+str(i), "set to Empty")
+			for i in range(1,5):
+				self.builder.get_object("adjustment{0}".format(i)).set_value(0)
+				print("adjustment"+str(i), "set to 0")
+		else:
+			user = self.db.read("user_info", "code='{0}'".format(code))[0]
+			print(user)
+			self.builder.get_object("entry1").set_text(user[1])
+			self.builder.get_object("entry2").set_text(user[2])
+			for i in range(1,5):
+				try:
+					order = int(self.db.read("orders", "userID={0} AND ID={1}".format(user[0], i))[0][1])
+				except:
+					order = 0
+				self.builder.get_object("adjustment{0}".format(i)).set_value(order)
+				print("adjustment"+str(i), "set to", order)
+		popup.show_all()
 			
 		
 	# Close all windows on the deletion of the top-level window
@@ -133,6 +158,10 @@ class Editor():
 	# Ticket Edit button
 	def on_toolbutton6_clicked(self, *args):
 		pass
+	
+	# Order Edit button
+	def on_toolbutton7_clicked(self, *args):
+		self.orderPopup(self.orderSelected())
 
 	# Order Remove button	
 	def on_toolbutton8_clicked(self, *args):
@@ -140,12 +169,7 @@ class Editor():
 
 	# Order Add button
 	def on_toolbutton9_clicked(self, *args):
-		self.prompt = self.builder.get_object("window2")
-		for i in range(1,5):
-			self.builder.get_object("label{0}".format(i)).set_text(self.db.read("ticket_types", "ID={0}".format(i))[0][1] + " Ticket")
-		#self.builder.get_object("label1").set_text(self.db.read("ticket_types", "ID=1")[1])
-		print(self.db.read("ticket_types", "ID=1")[0][1])
-		self.prompt.show_all()
+		self.orderPopup()
 	
 	def on_treeview1_row_activated(self, *args):
 		print("rowactivate1", *args)
@@ -154,17 +178,13 @@ class Editor():
 		print("rowactivate2", *args)
 
 	# When a new row is selected, update the value selected
-	def on_treeview1_cursor_changed(self, *args):
-		if self.firstrun is not True:
-			model, liststore = self.builder.get_object("treeview-selection1").get_selected()
-			self.ticket = int(model[liststore][0])
-			print(self.ticket)
-	
-	def on_treeview2_cursor_changed(self, *args):
-		if self.firstrun is not True:
-			model, liststore = self.builder.get_object("treeview-selection2").get_selected()
-			self.order = str(model[liststore][0])
-			print(self.order)
+	def orderSelected(self):
+		model, liststore = self.builder.get_object("treeview-selection2").get_selected()
+		return str(model[liststore][0])
+
+	def ticketSelected(self):
+		model, liststore = self.builder.get_object("treeview-selection1").get_selected()
+		return int(model[liststore][0])
 
 # Create the main event loop
 main = Editor()

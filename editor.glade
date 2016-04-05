@@ -142,7 +142,6 @@
                       <object class="GtkTreeView" id="treeview1">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <signal name="cursor-changed" handler="on_treeview1_cursor_changed" swapped="no"/>
                         <signal name="row-activated" handler="on_treeview1_row_activated" swapped="no"/>
                         <child internal-child="selection">
                           <object class="GtkTreeSelection" id="treeview-selection1"/>
@@ -167,7 +166,7 @@
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">-</property>
+                        <property name="label" translatable="yes">edit</property>
                         <property name="use_underline">True</property>
                         <property name="stock_id">gtk-edit</property>
                         <signal name="clicked" handler="on_toolbutton6_clicked" swapped="no"/>
@@ -205,7 +204,6 @@
                       <object class="GtkTreeView" id="treeview2">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <signal name="cursor-changed" handler="on_treeview2_cursor_changed" swapped="no"/>
                         <signal name="row-activated" handler="on_treeview2_row_activated" swapped="no"/>
                         <child internal-child="selection">
                           <object class="GtkTreeSelection" id="treeview-selection2"/>
@@ -234,6 +232,20 @@
                         <property name="use_underline">True</property>
                         <property name="stock_id">gtk-remove</property>
                         <signal name="clicked" handler="on_toolbutton8_clicked" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="homogeneous">True</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkToolButton" id="toolbutton7">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">edit</property>
+                        <property name="use_underline">True</property>
+                        <property name="stock_id">gtk-edit</property>
+                        <signal name="clicked" handler="on_toolbutton7_clicked" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -302,6 +314,7 @@
     <property name="window_position">center-on-parent</property>
     <property name="default_width">200</property>
     <property name="type_hint">dialog</property>
+    <property name="deletable">False</property>
     <property name="transient_for">window1</property>
     <property name="attached_to">window1</property>
     <child>
