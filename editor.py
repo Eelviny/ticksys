@@ -98,6 +98,7 @@ class Editor():
 			self.liststore2.append([code, name, tickets])
 
 	def orderPopup(self, code=None):
+		self.omode = code
 		popup = self.builder.get_object("window2")
 		for i in range(1,5):
 			self.builder.get_object("label{0}".format(i)).set_text(self.db.read("ticket_types", "ID={0}".format(i))[0][1] + " Ticket")
@@ -109,6 +110,18 @@ class Editor():
 		self.builder.get_object("entry2").set_text(user[1])
 		for i in range(4):
 			self.builder.get_object("adjustment{0}".format(i+1)).set_value(user[3][i])
+		popup.show_all()
+		
+	def ticketPopup(self, dbid=None):
+		self.tmode = dbid
+		popup = self.builder.get_object("window3")
+		if dbid == None:
+			ticket = (1, '', 0.00, '')
+		else:
+			ticket = self.db.read("ticket_types", "ID='{0}'".format(dbid))[0]
+		self.builder.get_object("entry3").set_text(ticket[1])
+		self.builder.get_object("adjustment5").set_value(float(ticket[2]))
+		self.builder.get_object("entry4").set_text(ticket[3])
 		popup.show_all()
 		
 	# Close all windows on the deletion of the top-level window
@@ -137,7 +150,7 @@ class Editor():
 
 	# Ticket Edit button
 	def on_toolbutton6_clicked(self, *args):
-		pass
+		self.ticketPopup(self.ticketSelected())
 	
 	# Order Edit button
 	def on_toolbutton7_clicked(self, *args):
@@ -150,12 +163,24 @@ class Editor():
 	# Order Add button
 	def on_toolbutton9_clicked(self, *args):
 		self.orderPopup()
+		
+	def on_toolbutton10_clicked(self, *args):
+		self.ticketPopup()
+		
+	def on_toolbutton11_clicked(self, *args):
+		pass
 	
 	def on_treeview1_row_activated(self, *args):
 		print("rowactivate1", *args)
 		
 	def on_treeview2_row_activated(self, *args):
 		print("rowactivate2", *args)
+		
+	def on_button2_clicked(self, *args):
+		self.builder.get_object("window2").hide()
+		
+	def on_button4_clicked(self, *args):
+		self.builder.get_object("window3").hide()
 
 	# When called, give the value of the current selection using a unique ID
 	def orderSelected(self):
