@@ -80,6 +80,22 @@ class Database():
 				self.write("orders", (quant, dbid, typ))
 		self.commit()
 		print("Entry Saved") # debug code
+		
+	def returnOrders(self, query=""):
+		users = []
+		for a in self.read("user_info", query):
+			orders = []
+			for b in self.read("ticket_types"):
+				order = self.read("orders", "ticketTypeID={0} AND userID={1}".format(b[0], user[0]))
+				if order != []:
+					orders.append(order[0][1])
+					print(order)
+				else:
+					orders.append(0)
+					print(order)
+			users.append([a[1], a[2], a[3], orders])
+		return users
+		
 			
 	# Find the next free ID
 	def nextAvail(self, table):

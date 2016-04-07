@@ -86,23 +86,14 @@ class Editor():
 	# We need to present each order in a way that the user can read, bringing the data in from all tables.
 	def updateOrders(self):
 		self.liststore2.clear()
-		# We need a row for every user
-		for a, user in enumerate(self.db.read("user_info")):
-			# Take the ticket code and use for the first row
-			code = user[3]
-			# Combine the first and last names into the second row
-			name = str(user[1] + " " + user[2])
-			# Finding the ticket quantity and then name requires multiple queries
+		for i in self.db.returnOrders():
+			name = i[0] + " " + i[1]
+			code = i[2]
 			tickets = ""
-			# Repeat for each order attached to the user
-			for b, order in enumerate(self.db.read("orders", "userID={0}".format(user[0]))):
-				# Query the ticket_types table for the correct ticket name
-				ticketname = self.db.read("ticket_types", "ID={0}".format(order[3]+1))[0][1]
-				# Take the order quantity and the ticket name and place in a string
-				tickets += str(str(order[1]) + " " + ticketname + ", ")
-			# Remove the last ", "
+			for a, b in enumerate(i[3]):
+				typename = self.db.read("ticket_types", "ID={0}".format(a+1))[0][1]
+				tickets += str(b + " " + typename + ", ")
 			tickets = tickets[:-2]
-			# Finally, take the row and append it to the table
 			self.liststore2.append([code, name, tickets])
 
 	def orderPopup(self, code=None):
