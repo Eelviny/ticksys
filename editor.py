@@ -91,8 +91,9 @@ class Editor():
 			code = i[2]
 			tickets = ""
 			for a, b in enumerate(i[3]):
-				typename = self.db.read("ticket_types", "ID={0}".format(a+1))[0][1]
-				tickets += str(b + " " + typename + ", ")
+				if b != 0:
+					typename = self.db.read("ticket_types", "ID={0}".format(a+1))[0][1]
+					tickets += str(str(b) + " " + typename + ", ")
 			tickets = tickets[:-2]
 			self.liststore2.append([code, name, tickets])
 
@@ -101,26 +102,14 @@ class Editor():
 		for i in range(1,5):
 			self.builder.get_object("label{0}".format(i)).set_text(self.db.read("ticket_types", "ID={0}".format(i))[0][1] + " Ticket")
 		if code == None:
-			for i in range(1,3):
-				self.builder.get_object("entry{0}".format(i)).set_text("")
-				print("entry"+str(i), "set to Empty")
-			for i in range(1,5):
-				self.builder.get_object("adjustment{0}".format(i)).set_value(0)
-				print("adjustment"+str(i), "set to 0")
+			user = ["", "", "", [0, 0, 0, 0]]
 		else:
-			user = self.db.read("user_info", "code='{0}'".format(code))[0]
-			print(user)
-			self.builder.get_object("entry1").set_text(user[1])
-			self.builder.get_object("entry2").set_text(user[2])
-			for i in range(1,5):
-				try:
-					order = int(self.db.read("orders", "userID={0} AND ID={1}".format(user[0], i))[0][1])
-				except:
-					order = 0
-				self.builder.get_object("adjustment{0}".format(i)).set_value(order)
-				print("adjustment"+str(i), "set to", order)
+			user = self.db.returnOrders("code='{0}'".format(code))[0]
+		self.builder.get_object("entry1").set_text(user[0])
+		self.builder.get_object("entry2").set_text(user[1])
+		for i in range(4):
+			self.builder.get_object("adjustment{0}".format(i+1)).set_value(user[3][i])
 		popup.show_all()
-			
 		
 	# Close all windows on the deletion of the top-level window
 	def on_window1_delete_event(self, *args):
@@ -168,7 +157,7 @@ class Editor():
 	def on_treeview2_row_activated(self, *args):
 		print("rowactivate2", *args)
 
-	# When a new row is selected, update the value selected
+	# When called, give the value of the current selection using a unique ID
 	def orderSelected(self):
 		model, liststore = self.builder.get_object("treeview-selection2").get_selected()
 		return str(model[liststore][0])
