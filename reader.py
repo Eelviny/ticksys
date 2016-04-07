@@ -26,11 +26,11 @@ class Reader():
 			raise SystemExit(0)
 		# To prevent multiple database reads, store the whole table in memory at the start
 		self.tickets = self.db.read("ticket_types")
-		print(self.tickets) # debug code
+		print(self.db.read("user_info"))
 
 	# Fetches the text from entry1
 	def textGet(self):
-		return self.entry1.get_text()		
+		return self.entry1.get_text().upper()	
 
 	# Sets the text in entry1
 	def textSet(self, text):
@@ -45,36 +45,27 @@ class Reader():
 		
 	# Whenever the text changes, call the updater
 	def textUpdate(self):
-		print(self.textGet()) # debug code
 		# The magic part of the program. Once the value is long enough, cue the info
 		if len(self.textGet()) >= 9:
 			try:
-				# fetch the user info for the relevant code using codereader
-				info = codereader.codeRead(self.db, self.textGet())
-				print(info) # debug code
-				orders = self.db.read("orders", "userID={0}".format(info[0][0]))
-				print(orders) # debug code
-				# Extract the second window
-				self.popup = self.builder.get_object("window2")
-				# Set the title of the second window to the code inputted, capitalised
-				self.popup.set_title(self.textGet().upper())
-				# Pull the users first and last names from the database and put it on the first line
-				self.builder.get_object("label1").set_text(str("Name: " + info[0][1] + " " + info[0][2]))
-				# The next 4 lines are for each of the 4 ticket types
-				for i in range(1,5):
-					# Use for loops to find the correct order number in the nested list
-					order = "0"
-					for a, b in enumerate(orders):
-						if b[3] == i-1:
-							order = str(b[1])
-					print(order) # debug code
-					# Take all the information found on the users tickets and place it into the labels
-					self.builder.get_object("label{0}".format(str(i+1))).set_text(str(self.tickets[i-1][1] + ": " + order))
-				# Now we have the information in place, show the user the popup box
-				self.popup.show_all()
+				# Take the input and run it against the checksum
+				code = self.textGet()
+				codereader.codeRead(code)
+				# Use dbinterface to create an easy to use list of values
+				ticket = self.db.returnOrders("code='{0}'".format(code))[0]
+				# Assign the popup window and set the title
+				popup = self.builder.get_object("window2")
+				popup.set_title(ticket[2])
+				# Show the customers name at the top
+				self.builder.get_object("label1").set_text("Name: " + ticket[0] + " " + ticket[1])
+				# Display a row for each ticket type
+				for i in range(4):
+					self.builder.get_object("label{0}".format(str(i+2))).set_text(self.tickets[i][1] + ": " + str(ticket[3][i]))
+				# Show the window, with all attributes set
+				popup.show_all()
 				# Reset the code reader for the next use
 				self.entry1.set_text("")
-			except ValueError:
+			except:
 				# If the checksum fails, handle gracefully and give a nice error message to the user
 				self.textSet("Error!")
 				self.entry1.grab_focus()
@@ -142,7 +133,7 @@ class Reader():
 	# When the popup is finished with, don't destroy it - hide it away for the next use
 	# The close button on the popup is disabled, so the only way to get rid of it is to use button17
 	def on_button17_clicked(self, *args):
-		self.popup.hide()
+		self.builder.get_object("window2").hide()
 	
 	def on_filechooserbutton1_file_set(self, *args):
 		pass
