@@ -11,26 +11,14 @@ class Database():
 		# Connect to database
 		self.conn = sqlite3.connect(path)
 		self.c = self.conn.cursor()
-		
-	# By default, don't save to the database immediately
-	def execute(self, statement, save=False):
-		self.c.execute(statement)
-		if save == True:
-			self.commit()
-	
-	# Shortcut function for commit
-	def commit(self):
-		self.conn.commit()
 	
 	# Once the database is finished with, it can delete itself from memory
 	def close(self, save=True):
 		# If changes need to be discarded save can be set to False
 		if save == True:
-			self.commit()
+			self.conn.commit()
 		# Close the database connection
 		self.conn.close()
-		# Don't delete from dbrunning, or the values will shift - just set to None
-		# dbrunning[dbrunning.index(self)] = None
 		# Finally delete itself from memory to free up space
 		del self
 		
@@ -59,9 +47,9 @@ class Database():
 		# If a function needs the ID of the item created, it can catch this value
 		return dbid
 		
-	def update(self, table, column, dbid, value):
+	def update(self, table, column, query, value):
 		try:
-			self.c.execute('UPDATE {0} SET {1} = {2} WHERE ID = {3}'.format(table, column, value, dbid))
+			self.c.execute('UPDATE {0} SET {1} = {2} WHERE {3}'.format(table, column, value, query))
 			return True
 		except:
 			return False
@@ -79,7 +67,7 @@ class Database():
 			if int(quant) > 0:
 				# Database index starts from 1, so add 1 to typ
 				self.write("orders", (quant, dbid, typ+1))
-		self.commit()
+		self.conn.commit()
 		print("Entry Saved") # debug code
 		
 	def returnOrders(self, query=""):
@@ -95,8 +83,7 @@ class Database():
 			users.append([a[1], a[2], a[3], orders])
 		print(users)
 		return users
-		
-			
+
 	# Find the next free ID
 	def nextAvail(self, table):
 		# Find the largest ID in the table
@@ -122,10 +109,10 @@ class Database():
 # Creates a new database with the correct tables
 def newDB(path, keepalive=True):
 	db = Database(path)
-	db.execute('CREATE TABLE ticket_types (ID INTEGER PRIMARY KEY AUTOINCREMENT, tName TEXT, tPrice DECIMAL(10,2), tInfo TEXT);')
-	db.execute('CREATE TABLE user_info (ID INTEGER PRIMARY KEY AUTOINCREMENT, fName TEXT, lName TEXT, code CHAR(10));')
-	db.execute('CREATE TABLE orders (ID INTEGER PRIMARY KEY AUTOINCREMENT, quantity INTEGER, userID INTEGER, ticketTypeID INTEGER);')
-	db.commit()
+	db.c.execute('CREATE TABLE ticket_types (ID INTEGER PRIMARY KEY AUTOINCREMENT, tName TEXT, tPrice DECIMAL(10,2), tInfo TEXT);')
+	db.c.execute('CREATE TABLE user_info (ID INTEGER PRIMARY KEY AUTOINCREMENT, fName TEXT, lName TEXT, code CHAR(10));')
+	db.c.execute('CREATE TABLE orders (ID INTEGER PRIMARY KEY AUTOINCREMENT, quantity INTEGER, userID INTEGER, ticketTypeID INTEGER);')
+	db.conn.commit()
 	# If the database is not needed right now, close it after creation
 	if not keepalive:
 		db.close()
@@ -140,7 +127,5 @@ def sampleDB(path=":memory:"):
 	db.write("ticket_types", ("Child", "10.50", "A slightly smaller human being."))
 	db.write("ticket_types", ("Student", "12.10", "A youthful human being."))
 	db.write("ticket_types", ("Senior", "18.46", "An old human being."))
-	db.write("user_info", ("Elvin", "Luff", "001E5CBC5"))
-	db.write("orders", ("3", "1", "1"))
-	db.write("orders", ("5", "1", "3"))
+	db.newEntry("Elvin", "Luff", "001E5CBC5", [3, 0, 5, 0])
 	return db
