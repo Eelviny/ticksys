@@ -77,7 +77,8 @@ class Database():
 		for typ, quant in enumerate(tickets):
 			# Only write orders to the database if there are 1 or more tickets
 			if int(quant) > 0:
-				self.write("orders", (quant, dbid, typ))
+				# Database index starts from 1, so add 1 to typ
+				self.write("orders", (quant, dbid, typ+1))
 		self.commit()
 		print("Entry Saved") # debug code
 		
@@ -86,14 +87,13 @@ class Database():
 		for a in self.read("user_info", query):
 			orders = []
 			for b in self.read("ticket_types"):
-				order = self.read("orders", "ticketTypeID={0} AND userID={1}".format(b[0], user[0]))
+				order = self.read("orders", "ticketTypeID={0} AND userID={1}".format(b[0], a[0]))
 				if order != []:
 					orders.append(order[0][1])
-					print(order)
 				else:
 					orders.append(0)
-					print(order)
 			users.append([a[1], a[2], a[3], orders])
+		print(users)
 		return users
 		
 			
